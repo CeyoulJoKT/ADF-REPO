@@ -15,7 +15,15 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText9",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "derivedColumn1"
@@ -25,9 +33,6 @@
 				},
 				{
 					"name": "surrogateKey1"
-				},
-				{
-					"name": "flowlet1"
 				}
 			],
 			"scriptLines": [
@@ -42,7 +47,8 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"select1 derive(ProductID = md5(ProductID)) ~> derivedColumn1",
+				"select1 derive(ProductID = md5(ProductID)\r",
+				") ~> derivedColumn1",
 				"surrogateKey1 select(mapColumn(",
 				"          ProductID,",
 				"          Date,",
@@ -55,7 +61,10 @@
 				"source1 keyGenerate(output({1000} as long),",
 				"     startAt: 100L,",
 				"     stepValue: 2L) ~> surrogateKey1",
-				"derivedColumn1 compose(composition: 'undefined') ~> flowlet1@()"
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
