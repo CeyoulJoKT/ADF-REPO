@@ -1,5 +1,5 @@
 {
-	"name": "DataHash",
+	"name": "pipeline2",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DataHash",
+						"referenceName": "Basic-data-transformation",
 						"type": "DataFlowReference"
 					},
 					"compute": {

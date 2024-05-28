@@ -1,24 +1,15 @@
 {
-	"name": "DelimitedText11",
+	"name": "DelimitedText12",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage5",
 			"type": "LinkedServiceReference"
-		},
-		"parameters": {
-			"filename": {
-				"type": "string"
-			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": {
-					"value": "@dataset().filename",
-					"type": "Expression"
-				},
 				"container": "for-dataflow-only"
 			},
 			"columnDelimiter": ",",

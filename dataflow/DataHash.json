@@ -47,8 +47,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"select1 derive(ProductID = md5(ProductID)\r",
-				") ~> derivedColumn1",
+				"select1 derive(ProductID = md5(ProductID)) ~> derivedColumn1",
 				"surrogateKey1 select(mapColumn(",
 				"          ProductID,",
 				"          Date,",
@@ -63,8 +62,10 @@
 				"     stepValue: 2L) ~> surrogateKey1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     partitionFileNames:['Hasheddata'],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
 	}

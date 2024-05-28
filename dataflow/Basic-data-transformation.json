@@ -1,6 +1,9 @@
 {
-	"name": "dataflow1",
+	"name": "Basic-data-transformation",
 	"properties": {
+		"folder": {
+			"name": "Dataflow-transformation"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
@@ -34,6 +37,12 @@
 				},
 				{
 					"name": "derivedColumn2"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -62,7 +71,20 @@
 				"     wildcardPaths:['*.csv']) ~> source2",
 				"source1, derivedColumn2 union(byName: true)~> union1",
 				"source2 derive(Country = 'USA') ~> derivedColumn2",
-				"union1 sink(allowSchemaDrift: true,",
+				"union1 keyGenerate(output({1000} as long),",
+				"     startAt: 100L,",
+				"     stepValue: 2L) ~> surrogateKey1",
+				"surrogateKey1 select(mapColumn(",
+				"          UQ_Key = {1000},",
+				"          ProductID,",
+				"          Date,",
+				"          Zip,",
+				"          Revenue,",
+				"          Country",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          Name as string,",
