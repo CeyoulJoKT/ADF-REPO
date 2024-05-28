@@ -739,7 +739,9 @@
 							"sink": {
 								"type": "AzureSqlSink",
 								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
 							"translator": {
@@ -747,38 +749,179 @@
 								"mappings": [
 									{
 										"source": {
-											"name": "DepartmentID",
+											"name": "BusinessEntityID",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "BusinessEntityID",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "NationalIDNumber",
+											"type": "String",
+											"physicalType": "nvarchar"
+										},
+										"sink": {
+											"name": "NationalIDNumber",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "LoginID",
+											"type": "String",
+											"physicalType": "nvarchar"
+										},
+										"sink": {
+											"name": "LoginID",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OrganizationNode",
+											"physicalType": "hierarchyid"
+										},
+										"sink": {
+											"name": "OrganizationNode"
+										}
+									},
+									{
+										"source": {
+											"name": "OrganizationLevel",
 											"type": "Int16",
 											"physicalType": "smallint"
 										},
 										"sink": {
-											"name": "DepartmentID",
+											"name": "OrganizationLevel",
 											"type": "Int16",
 											"physicalType": "smallint"
 										}
 									},
 									{
 										"source": {
-											"name": "Name",
+											"name": "JobTitle",
 											"type": "String",
 											"physicalType": "nvarchar"
 										},
 										"sink": {
-											"name": "Name",
+											"name": "JobTitle",
 											"type": "String",
 											"physicalType": "nvarchar"
 										}
 									},
 									{
 										"source": {
-											"name": "GroupName",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"name": "BirthDate",
+											"type": "DateTime",
+											"physicalType": "date"
 										},
 										"sink": {
-											"name": "GroupName",
+											"name": "BirthDate",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "MaritalStatus",
+											"type": "String",
+											"physicalType": "nchar"
+										},
+										"sink": {
+											"name": "MaritalStatus",
 											"type": "String",
 											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Gender",
+											"type": "String",
+											"physicalType": "nchar"
+										},
+										"sink": {
+											"name": "Gender",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "HireDate",
+											"type": "DateTime",
+											"physicalType": "date"
+										},
+										"sink": {
+											"name": "HireDate",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "SalariedFlag",
+											"type": "Boolean",
+											"physicalType": "bit"
+										},
+										"sink": {
+											"name": "SalariedFlag",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "VacationHours",
+											"type": "Int16",
+											"physicalType": "smallint"
+										},
+										"sink": {
+											"name": "VacationHours",
+											"type": "Int16",
+											"physicalType": "smallint"
+										}
+									},
+									{
+										"source": {
+											"name": "SickLeaveHours",
+											"type": "Int16",
+											"physicalType": "smallint"
+										},
+										"sink": {
+											"name": "SickLeaveHours",
+											"type": "Int16",
+											"physicalType": "smallint"
+										}
+									},
+									{
+										"source": {
+											"name": "CurrentFlag",
+											"type": "Boolean",
+											"physicalType": "bit"
+										},
+										"sink": {
+											"name": "CurrentFlag",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "rowguid",
+											"type": "Guid",
+											"physicalType": "uniqueidentifier"
+										},
+										"sink": {
+											"name": "rowguid",
+											"type": "Guid",
+											"physicalType": "uniqueidentifier"
 										}
 									},
 									{
@@ -788,9 +931,9 @@
 											"physicalType": "datetime"
 										},
 										"sink": {
-											"name": "ModifieDate",
+											"name": "ModifiedDate",
 											"type": "DateTime",
-											"physicalType": "datetime"
+											"physicalType": "datetime2"
 										}
 									}
 								],
@@ -810,7 +953,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "AzureSqlTable2",
+								"referenceName": "AzureSqlTable12",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -828,7 +971,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SqlServerTableADV')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSqlTable2')]"
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable12')]"
 			]
 		},
 		{
@@ -3343,7 +3486,7 @@
 							"name": "join2"
 						},
 						{
-							"name": "derivedColumn2"
+							"name": "Maskemail"
 						},
 						{
 							"name": "select1"
@@ -3425,8 +3568,8 @@
 						"     matchType:'exact',",
 						"     ignoreSpaces: false,",
 						"     broadcast: 'auto')~> join2",
-						"join1 derive(EmailAddress = substring(EmailAddress, 1, 3) + 'XXX@' + substring(EmailAddress, 5, length(EmailAddress) - 4)) ~> derivedColumn2",
-						"derivedColumn2 select(mapColumn(",
+						"join1 derive(EmailAddress = substring(EmailAddress, 1, 3) + 'XXX@' + substring(EmailAddress, 5, length(EmailAddress) - 4)) ~> Maskemail",
+						"Maskemail select(mapColumn(",
 						"          CustomerID = source1@CustomerID,",
 						"          NameStyle,",
 						"          Title,",
@@ -3843,6 +3986,27 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SqlServer5')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable12')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dupli",
+					"table": "HumanResources.Employee"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
 			]
 		}
 	]
