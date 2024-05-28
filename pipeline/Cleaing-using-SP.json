@@ -115,7 +115,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SqlServerTableADV",
+						"referenceName": "SqlServerTable7",
 						"type": "DatasetReference"
 					}
 				],
