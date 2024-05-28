@@ -1,12 +1,12 @@
 {
-	"name": "SqlServerTableADV",
+	"name": "AzureSqlTable11",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SqlServer4ADV1",
+			"referenceName": "AzureSqlDatabase1",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
-		"type": "SqlServerTable",
+		"type": "AzureSqlTable",
 		"schema": [
 			{
 				"name": "DepartmentID",
@@ -22,16 +22,15 @@
 				"type": "nvarchar"
 			},
 			{
-				"name": "ModifiedDate",
+				"name": "ModifieDate",
 				"type": "datetime",
 				"precision": 23,
 				"scale": 3
 			}
 		],
 		"typeProperties": {
-			"schema": "HumanResources",
-			"table": "Department"
+			"schema": "dbo",
+			"table": "[HumanResources].[Department] duplicate"
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }
