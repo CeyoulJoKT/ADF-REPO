@@ -33,38 +33,179 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "DepartmentID",
+									"name": "BusinessEntityID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "BusinessEntityID",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "NationalIDNumber",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "NationalIDNumber",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "LoginID",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "LoginID",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OrganizationNode",
+									"physicalType": "hierarchyid"
+								},
+								"sink": {
+									"name": "OrganizationNode"
+								}
+							},
+							{
+								"source": {
+									"name": "OrganizationLevel",
 									"type": "Int16",
 									"physicalType": "smallint"
 								},
 								"sink": {
-									"name": "DepartmentID",
+									"name": "OrganizationLevel",
 									"type": "Int16",
 									"physicalType": "smallint"
 								}
 							},
 							{
 								"source": {
-									"name": "Name",
+									"name": "JobTitle",
 									"type": "String",
 									"physicalType": "nvarchar"
 								},
 								"sink": {
-									"name": "Name",
+									"name": "JobTitle",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
 							},
 							{
 								"source": {
-									"name": "GroupName",
-									"type": "String",
-									"physicalType": "nvarchar"
+									"name": "BirthDate",
+									"type": "DateTime",
+									"physicalType": "date"
 								},
 								"sink": {
-									"name": "GroupName",
+									"name": "BirthDate",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								}
+							},
+							{
+								"source": {
+									"name": "MaritalStatus",
+									"type": "String",
+									"physicalType": "nchar"
+								},
+								"sink": {
+									"name": "MaritalStatus",
 									"type": "String",
 									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Gender",
+									"type": "String",
+									"physicalType": "nchar"
+								},
+								"sink": {
+									"name": "Gender",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "HireDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "HireDate",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								}
+							},
+							{
+								"source": {
+									"name": "SalariedFlag",
+									"type": "Boolean",
+									"physicalType": "bit"
+								},
+								"sink": {
+									"name": "SalariedFlag",
+									"type": "Boolean",
+									"physicalType": "bit"
+								}
+							},
+							{
+								"source": {
+									"name": "VacationHours",
+									"type": "Int16",
+									"physicalType": "smallint"
+								},
+								"sink": {
+									"name": "VacationHours",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "SickLeaveHours",
+									"type": "Int16",
+									"physicalType": "smallint"
+								},
+								"sink": {
+									"name": "SickLeaveHours",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "CurrentFlag",
+									"type": "Boolean",
+									"physicalType": "bit"
+								},
+								"sink": {
+									"name": "CurrentFlag",
+									"type": "Boolean",
+									"physicalType": "bit"
+								}
+							},
+							{
+								"source": {
+									"name": "rowguid",
+									"type": "Guid",
+									"physicalType": "uniqueidentifier"
+								},
+								"sink": {
+									"name": "rowguid",
+									"type": "Guid",
+									"physicalType": "uniqueidentifier"
 								}
 							},
 							{
@@ -74,9 +215,9 @@
 									"physicalType": "datetime"
 								},
 								"sink": {
-									"name": "ModifieDate",
+									"name": "ModifiedDate",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "datetime2"
 								}
 							}
 						],
