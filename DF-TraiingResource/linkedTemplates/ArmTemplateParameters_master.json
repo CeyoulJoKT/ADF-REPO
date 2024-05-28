@@ -1,0 +1,84 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "DF-TraiingResource"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureBlobStorage2_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"value": ""
+		},
+		"SqlServer1_connectionString": {
+			"value": "Integrated Security=True;Data Source=NIGHTFURY\\SQLEXPRESS02;Initial Catalog=test4"
+		},
+		"SqlServer1_password": {
+			"value": ""
+		},
+		"SqlServer2_password": {
+			"value": ""
+		},
+		"SqlServer3_password": {
+			"value": ""
+		},
+		"SqlServer4ADV2_password": {
+			"value": ""
+		},
+		"AzureBlobStorage3_connectionString": {
+			"value": ""
+		},
+		"RestService1_properties_typeProperties_url": {
+			"value": "https://dummy.restapiexample.com/api/v1/employee"
+		},
+		"RestService2_properties_typeProperties_url": {
+			"value": "https://dummy.restapiexample.com/api/v1/employees"
+		},
+		"RestService3_properties_typeProperties_url": {
+			"value": "https://dummy.restapiexample.com/api/v1/employee"
+		},
+		"RestService4_properties_typeProperties_url": {
+			"value": "https://reqres.in/api/unknown/"
+		},
+		"SqlServer1_properties_typeProperties_userName": {
+			"value": "NIGHTFURY\\ceyoul"
+		},
+		"SqlServer2_properties_typeProperties_server": {
+			"value": "NIGHTFURY\\SQLEXPRESS02"
+		},
+		"SqlServer2_properties_typeProperties_database": {
+			"value": "test3"
+		},
+		"SqlServer2_properties_typeProperties_userName": {
+			"value": "NIGHTFURY\\Ceyoul"
+		},
+		"SqlServer3_properties_typeProperties_server": {
+			"value": "NIGHTFURY\\SQLEXPRESS02"
+		},
+		"SqlServer3_properties_typeProperties_database": {
+			"value": "AdventureWorks2008R2LOCAL"
+		},
+		"SqlServer3_properties_typeProperties_userName": {
+			"value": "NIGHTFURY\\Ceyoul"
+		},
+		"SqlServer4ADV2_properties_typeProperties_server": {
+			"value": "NIGHTFURY\\SQLEXPRESS02"
+		},
+		"SqlServer4ADV2_properties_typeProperties_database": {
+			"value": "AdventureWorks2008R2LOCAL"
+		},
+		"SqlServer4ADV2_properties_typeProperties_userName": {
+			"value": "NIGHTFURY\\Ceyoul"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
