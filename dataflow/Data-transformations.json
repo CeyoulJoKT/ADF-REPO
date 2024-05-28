@@ -26,10 +26,10 @@
 			],
 			"transformations": [
 				{
-					"name": "derivedColumn1"
+					"name": "AddingContinent"
 				},
 				{
-					"name": "filter1"
+					"name": "Removeshippingrow"
 				},
 				{
 					"name": "sort1"
@@ -38,7 +38,7 @@
 					"name": "surrogateKey1"
 				},
 				{
-					"name": "select2"
+					"name": "selectonlyneeded"
 				}
 			],
 			"scriptLines": [
@@ -54,9 +54,9 @@
 				"     purgeFiles: true,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> source1",
-				"source1 derive(Continent = 'Asia') ~> derivedColumn1",
-				"derivedColumn1 filter(AddressType != 'Shipping') ~> filter1",
-				"filter1 sort(asc(CustomerID, true)) ~> sort1",
+				"source1 derive(Continent = 'Asia') ~> AddingContinent",
+				"AddingContinent filter(AddressType != 'Shipping') ~> Removeshippingrow",
+				"Removeshippingrow sort(asc(CustomerID, true)) ~> sort1",
 				"sort1 keyGenerate(output(PrimaryID as long),",
 				"     startAt: 1000L,",
 				"     stepValue: 2L) ~> surrogateKey1",
@@ -68,8 +68,8 @@
 				"          Continent",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select2",
-				"select2 sink(allowSchemaDrift: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectonlyneeded",
+				"selectonlyneeded sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
