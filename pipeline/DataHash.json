@@ -81,7 +81,10 @@
 				"inputs": [
 					{
 						"referenceName": "DelimitedText10",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"filename": "@item.filename"
+						}
 					}
 				],
 				"outputs": [
