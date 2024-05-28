@@ -2,7 +2,7 @@
 	"name": "SqlServerTableADV",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SqlServer4ADV1",
+			"referenceName": "SqlServer4",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -30,7 +30,7 @@
 		],
 		"typeProperties": {
 			"schema": "HumanResources",
-			"table": "Department"
+			"table": "Employee"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
