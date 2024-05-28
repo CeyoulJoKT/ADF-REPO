@@ -25,6 +25,9 @@
 				},
 				{
 					"name": "surrogateKey1"
+				},
+				{
+					"name": "flowlet1"
 				}
 			],
 			"scriptLines": [
@@ -39,7 +42,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"select1 derive(ProductID = crc32(ProductID)) ~> derivedColumn1",
+				"select1 derive(ProductID = md5(ProductID)) ~> derivedColumn1",
 				"surrogateKey1 select(mapColumn(",
 				"          ProductID,",
 				"          Date,",
@@ -51,7 +54,8 @@
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"source1 keyGenerate(output({1000} as long),",
 				"     startAt: 100L,",
-				"     stepValue: 2L) ~> surrogateKey1"
+				"     stepValue: 2L) ~> surrogateKey1",
+				"derivedColumn1 compose(composition: 'undefined') ~> flowlet1@()"
 			]
 		}
 	}
