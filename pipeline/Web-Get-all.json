@@ -1,0 +1,132 @@
+{
+	"name": "Web-Get-all",
+	"properties": {
+		"activities": [
+			{
+				"name": "Filter1",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Web1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Web1').output.data",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@lessOrEquals(item().id,10)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Filter1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Filter1').output.value",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"activities": [
+						{
+							"name": "Stored procedure2",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[pr_webid]",
+								"storedProcedureParameters": {
+									"avatar": {
+										"value": {
+											"value": "@item.avatar",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"email": {
+										"value": {
+											"value": "@item.email",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"first_name": {
+										"value": {
+											"value": "@item.first_name",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"id": {
+										"value": {
+											"value": "@item.id",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"last_name": {
+										"value": {
+											"value": "@item.last_name",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "SqlServer1",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "https://reqres.in/api/users?page=2"
+				}
+			}
+		],
+		"folder": {
+			"name": "WebActivity"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-05-28T07:31:38Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,9 @@
+{
+	"name": "DF-TraiingResource",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "77bc22b8-9109-4cd6-8d2e-8680c6221ff7",
+		"tenantId": "0da37cf7-4679-4fbe-94ca-ce1b3d54ec45"
+	}
+}

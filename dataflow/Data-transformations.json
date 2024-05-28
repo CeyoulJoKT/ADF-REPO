@@ -1,0 +1,92 @@
+{
+	"name": "Data-transformations",
+	"properties": {
+		"folder": {
+			"name": "Dataflow-transformation"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable3",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable4",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "sort1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "select2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CustomerID as integer,",
+				"          AddressID as integer,",
+				"          AddressType as string,",
+				"          rowguid as string,",
+				"          ModifiedDate as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     purgeFiles: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source1 derive(Continent = 'Asia') ~> derivedColumn1",
+				"derivedColumn1 filter(AddressType != 'Shipping') ~> filter1",
+				"filter1 sort(asc(CustomerID, true)) ~> sort1",
+				"sort1 keyGenerate(output(PrimaryID as long),",
+				"     startAt: 1000L,",
+				"     stepValue: 2L) ~> surrogateKey1",
+				"surrogateKey1 select(mapColumn(",
+				"          UQPrimaryID = PrimaryID,",
+				"          CustomerID,",
+				"          AddressID,",
+				"          AddressType,",
+				"          Continent",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          UQPrimaryID,",
+				"          CustomerID,",
+				"          AddressID,",
+				"          AddressType,",
+				"          Continent",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
