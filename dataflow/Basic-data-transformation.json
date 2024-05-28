@@ -25,7 +25,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DelimitedText2",
+						"referenceName": "DelimitedText13",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -86,11 +86,6 @@
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          Name as string,",
-				"          {Age } as string,",
-				"          Country as string",
-				"     ),",
 				"     partitionFileNames:['Test'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
