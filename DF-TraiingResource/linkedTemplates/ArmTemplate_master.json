@@ -40,21 +40,29 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer3'"
 		},
-		"SqlServer4ADV2_password": {
+		"SqlServer4_password": {
 			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'SqlServer4ADV2'"
+			"metadata": "Secure string for 'password' of 'SqlServer4'"
 		},
 		"SqlServer4ADV1_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer4ADV1'"
 		},
-		"SqlServer4_password": {
+		"SqlServer4ADV2_password": {
 			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'SqlServer4'"
+			"metadata": "Secure string for 'password' of 'SqlServer4ADV2'"
 		},
 		"SqlServer5_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer5'"
+		},
+		"AzureBlobStorage4_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage4'"
+		},
+		"AzureBlobStorage5_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage5'"
 		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
@@ -100,15 +108,15 @@
 			"type": "string",
 			"defaultValue": "NIGHTFURY\\Ceyoul"
 		},
-		"SqlServer4ADV2_properties_typeProperties_server": {
+		"SqlServer4_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "NIGHTFURY\\SQLEXPRESS02"
 		},
-		"SqlServer4ADV2_properties_typeProperties_database": {
+		"SqlServer4_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "AdventureWorks2008R2LOCAL"
 		},
-		"SqlServer4ADV2_properties_typeProperties_userName": {
+		"SqlServer4_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "NIGHTFURY\\Ceyoul"
 		},
@@ -124,15 +132,15 @@
 			"type": "string",
 			"defaultValue": "NIGHTFURY\\Ceyoul"
 		},
-		"SqlServer4_properties_typeProperties_server": {
+		"SqlServer4ADV2_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "NIGHTFURY\\SQLEXPRESS02"
 		},
-		"SqlServer4_properties_typeProperties_database": {
+		"SqlServer4ADV2_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "AdventureWorks2008R2LOCAL"
 		},
-		"SqlServer4_properties_typeProperties_userName": {
+		"SqlServer4ADV2_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "NIGHTFURY\\Ceyoul"
 		},
@@ -187,6 +195,12 @@
 					"AzureSqlDatabase1_connectionString": {
 						"value": "[parameters('AzureSqlDatabase1_connectionString')]"
 					},
+					"AzureBlobStorage4_connectionString": {
+						"value": "[parameters('AzureBlobStorage4_connectionString')]"
+					},
+					"AzureBlobStorage5_connectionString": {
+						"value": "[parameters('AzureBlobStorage5_connectionString')]"
+					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"
 					},
@@ -226,15 +240,6 @@
 					"SqlServer2_password": {
 						"value": "[parameters('SqlServer2_password')]"
 					},
-					"SqlServer3_password": {
-						"value": "[parameters('SqlServer3_password')]"
-					},
-					"SqlServer4ADV2_password": {
-						"value": "[parameters('SqlServer4ADV2_password')]"
-					},
-					"SqlServer4ADV1_password": {
-						"value": "[parameters('SqlServer4ADV1_password')]"
-					},
 					"SqlServer1_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer1_properties_typeProperties_userName')]"
 					},
@@ -246,33 +251,6 @@
 					},
 					"SqlServer2_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer2_properties_typeProperties_userName')]"
-					},
-					"SqlServer3_properties_typeProperties_server": {
-						"value": "[parameters('SqlServer3_properties_typeProperties_server')]"
-					},
-					"SqlServer3_properties_typeProperties_database": {
-						"value": "[parameters('SqlServer3_properties_typeProperties_database')]"
-					},
-					"SqlServer3_properties_typeProperties_userName": {
-						"value": "[parameters('SqlServer3_properties_typeProperties_userName')]"
-					},
-					"SqlServer4ADV2_properties_typeProperties_server": {
-						"value": "[parameters('SqlServer4ADV2_properties_typeProperties_server')]"
-					},
-					"SqlServer4ADV2_properties_typeProperties_database": {
-						"value": "[parameters('SqlServer4ADV2_properties_typeProperties_database')]"
-					},
-					"SqlServer4ADV2_properties_typeProperties_userName": {
-						"value": "[parameters('SqlServer4ADV2_properties_typeProperties_userName')]"
-					},
-					"SqlServer4ADV1_properties_typeProperties_server": {
-						"value": "[parameters('SqlServer4ADV1_properties_typeProperties_server')]"
-					},
-					"SqlServer4ADV1_properties_typeProperties_database": {
-						"value": "[parameters('SqlServer4ADV1_properties_typeProperties_database')]"
-					},
-					"SqlServer4ADV1_properties_typeProperties_userName": {
-						"value": "[parameters('SqlServer4ADV1_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -294,11 +272,29 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"SqlServer3_password": {
+						"value": "[parameters('SqlServer3_password')]"
+					},
 					"SqlServer4_password": {
 						"value": "[parameters('SqlServer4_password')]"
 					},
+					"SqlServer4ADV1_password": {
+						"value": "[parameters('SqlServer4ADV1_password')]"
+					},
+					"SqlServer4ADV2_password": {
+						"value": "[parameters('SqlServer4ADV2_password')]"
+					},
 					"SqlServer5_password": {
 						"value": "[parameters('SqlServer5_password')]"
+					},
+					"SqlServer3_properties_typeProperties_server": {
+						"value": "[parameters('SqlServer3_properties_typeProperties_server')]"
+					},
+					"SqlServer3_properties_typeProperties_database": {
+						"value": "[parameters('SqlServer3_properties_typeProperties_database')]"
+					},
+					"SqlServer3_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServer3_properties_typeProperties_userName')]"
 					},
 					"SqlServer4_properties_typeProperties_server": {
 						"value": "[parameters('SqlServer4_properties_typeProperties_server')]"
@@ -308,6 +304,24 @@
 					},
 					"SqlServer4_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer4_properties_typeProperties_userName')]"
+					},
+					"SqlServer4ADV1_properties_typeProperties_server": {
+						"value": "[parameters('SqlServer4ADV1_properties_typeProperties_server')]"
+					},
+					"SqlServer4ADV1_properties_typeProperties_database": {
+						"value": "[parameters('SqlServer4ADV1_properties_typeProperties_database')]"
+					},
+					"SqlServer4ADV1_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServer4ADV1_properties_typeProperties_userName')]"
+					},
+					"SqlServer4ADV2_properties_typeProperties_server": {
+						"value": "[parameters('SqlServer4ADV2_properties_typeProperties_server')]"
+					},
+					"SqlServer4ADV2_properties_typeProperties_database": {
+						"value": "[parameters('SqlServer4ADV2_properties_typeProperties_database')]"
+					},
+					"SqlServer4ADV2_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServer4ADV2_properties_typeProperties_userName')]"
 					},
 					"SqlServer5_properties_typeProperties_server": {
 						"value": "[parameters('SqlServer5_properties_typeProperties_server')]"

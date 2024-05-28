@@ -29,16 +29,22 @@
 		"SqlServer3_password": {
 			"value": ""
 		},
-		"SqlServer4ADV2_password": {
+		"SqlServer4_password": {
 			"value": ""
 		},
 		"SqlServer4ADV1_password": {
 			"value": ""
 		},
-		"SqlServer4_password": {
+		"SqlServer4ADV2_password": {
 			"value": ""
 		},
 		"SqlServer5_password": {
+			"value": ""
+		},
+		"AzureBlobStorage4_connectionString": {
+			"value": ""
+		},
+		"AzureBlobStorage5_connectionString": {
 			"value": ""
 		},
 		"RestService1_properties_typeProperties_url": {
@@ -74,13 +80,13 @@
 		"SqlServer3_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\Ceyoul"
 		},
-		"SqlServer4ADV2_properties_typeProperties_server": {
+		"SqlServer4_properties_typeProperties_server": {
 			"value": "NIGHTFURY\\SQLEXPRESS02"
 		},
-		"SqlServer4ADV2_properties_typeProperties_database": {
+		"SqlServer4_properties_typeProperties_database": {
 			"value": "AdventureWorks2008R2LOCAL"
 		},
-		"SqlServer4ADV2_properties_typeProperties_userName": {
+		"SqlServer4_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\Ceyoul"
 		},
 		"SqlServer4ADV1_properties_typeProperties_server": {
@@ -92,13 +98,13 @@
 		"SqlServer4ADV1_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\Ceyoul"
 		},
-		"SqlServer4_properties_typeProperties_server": {
+		"SqlServer4ADV2_properties_typeProperties_server": {
 			"value": "NIGHTFURY\\SQLEXPRESS02"
 		},
-		"SqlServer4_properties_typeProperties_database": {
+		"SqlServer4ADV2_properties_typeProperties_database": {
 			"value": "AdventureWorks2008R2LOCAL"
 		},
-		"SqlServer4_properties_typeProperties_userName": {
+		"SqlServer4ADV2_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\Ceyoul"
 		},
 		"SqlServer5_properties_typeProperties_server": {
