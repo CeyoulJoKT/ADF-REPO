@@ -20,6 +20,9 @@
 		"AzureBlobStorage5_connectionString": {
 			"value": ""
 		},
+		"AzureBlobStorage6_connectionString": {
+			"value": ""
+		},
 		"AzureSqlDatabase1_connectionString": {
 			"value": ""
 		},
@@ -45,6 +48,12 @@
 			"value": ""
 		},
 		"SqlServer5_password": {
+			"value": ""
+		},
+		"AzureBlobStorage7_connectionString": {
+			"value": ""
+		},
+		"SqlServer6_password": {
 			"value": ""
 		},
 		"RestService1_properties_typeProperties_url": {
@@ -114,6 +123,15 @@
 			"value": "AdventureWorks2008R2LOCAL"
 		},
 		"SqlServer5_properties_typeProperties_userName": {
+			"value": "NIGHTFURY\\Ceyoul"
+		},
+		"SqlServer6_properties_typeProperties_server": {
+			"value": "NIGHTFURY\\SQLEXPRESS02"
+		},
+		"SqlServer6_properties_typeProperties_database": {
+			"value": "test4"
+		},
+		"SqlServer6_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\Ceyoul"
 		}
 	}
