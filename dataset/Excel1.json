@@ -13,7 +13,8 @@
 				"type": "AzureBlobStorageLocation",
 				"fileName": "file_example_XLS_1000.xls",
 				"container": "testing"
-			}
+			},
+			"firstRowAsHeader": true
 		},
 		"schema": [
 			{
