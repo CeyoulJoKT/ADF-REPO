@@ -57,7 +57,85 @@
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate"
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['articles'][0]['source']['id']"
+								},
+								"sink": {
+									"name": "id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['articles'][0]['source']['name']"
+								},
+								"sink": {
+									"name": "name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['articles'][0]['author']"
+								},
+								"sink": {
+									"name": "author"
+								}
+							},
+							{
+								"source": {
+									"path": "$['articles'][0]['title']"
+								},
+								"sink": {
+									"name": "title"
+								}
+							},
+							{
+								"source": {
+									"path": "$['articles'][0]['description']"
+								},
+								"sink": {
+									"name": "description"
+								}
+							},
+							{
+								"source": {
+									"path": "$['articles'][0]['url']"
+								},
+								"sink": {
+									"name": "url"
+								}
+							},
+							{
+								"source": {
+									"path": "$['articles'][0]['urlToImage']"
+								},
+								"sink": {
+									"name": "urlToImage"
+								}
+							},
+							{
+								"source": {
+									"path": "$['articles'][0]['publishedAt']"
+								},
+								"sink": {
+									"name": "publishedAt"
+								}
+							},
+							{
+								"source": {
+									"path": "$['articles'][0]['content']"
+								},
+								"sink": {
+									"name": "content"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
