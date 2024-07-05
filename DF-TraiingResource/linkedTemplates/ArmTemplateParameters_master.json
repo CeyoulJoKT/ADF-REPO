@@ -23,6 +23,9 @@
 		"AzureBlobStorage6_connectionString": {
 			"value": ""
 		},
+		"AzureBlobStorage7_connectionString": {
+			"value": ""
+		},
 		"AzureSqlDatabase1_connectionString": {
 			"value": ""
 		},
@@ -48,9 +51,6 @@
 			"value": ""
 		},
 		"SqlServer5_password": {
-			"value": ""
-		},
-		"AzureBlobStorage7_connectionString": {
 			"value": ""
 		},
 		"SqlServer6_password": {
@@ -133,6 +133,9 @@
 		},
 		"SqlServer6_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\Ceyoul"
+		},
+		"RestService5_properties_typeProperties_url": {
+			"value": "https://newsapi.org/v2/everything?q=keyword"
 		},
 		"containerUri": {
 			"value": ""
