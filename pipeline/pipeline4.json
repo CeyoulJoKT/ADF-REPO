@@ -42,7 +42,7 @@
 									"path": "$['dealership']['name']"
 								},
 								"sink": {
-									"name": "dealership_name"
+									"name": "name"
 								}
 							},
 							{
@@ -116,120 +116,9 @@
 								"sink": {
 									"name": "price"
 								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['inventory'][0]['maintenanceRecords'][0]['date']"
-								},
-								"sink": {
-									"name": "date"
-								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['inventory'][0]['maintenanceRecords'][0]['service']"
-								},
-								"sink": {
-									"name": "service"
-								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['inventory'][0]['maintenanceRecords'][0]['details']['serviceCenter']"
-								},
-								"sink": {
-									"name": "serviceCenter"
-								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['inventory'][0]['maintenanceRecords'][0]['details']['mileage']"
-								},
-								"sink": {
-									"name": "mileage"
-								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['inventory'][0]['maintenanceRecords'][0]['details']['cost']"
-								},
-								"sink": {
-									"name": "cost"
-								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['inventory'][0]['rentalInfo']['availability']"
-								},
-								"sink": {
-									"name": "availability"
-								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['inventory'][0]['rentalInfo']['rentalRates']['daily']"
-								},
-								"sink": {
-									"name": "daily"
-								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['inventory'][0]['rentalInfo']['rentalRates']['weekly']"
-								},
-								"sink": {
-									"name": "weekly"
-								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['inventory'][0]['rentalInfo']['rentalRates']['monthly']"
-								},
-								"sink": {
-									"name": "monthly"
-								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['staff'][0]['id']"
-								},
-								"sink": {
-									"name": "dealership_staff'][0]['id"
-								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['staff'][0]['name']"
-								},
-								"sink": {
-									"name": "dealership_staff'][0]['name"
-								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['staff'][0]['role']"
-								},
-								"sink": {
-									"name": "role"
-								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['staff'][0]['contact']['email']"
-								},
-								"sink": {
-									"name": "email"
-								}
-							},
-							{
-								"source": {
-									"path": "$['dealership']['staff'][0]['contact']['phone']"
-								},
-								"sink": {
-									"name": "phone"
-								}
 							}
-						]
+						],
+						"collectionReference": ""
 					}
 				},
 				"inputs": [
@@ -248,8 +137,6 @@
 			{
 				"name": "Data flow1",
 				"type": "ExecuteDataFlow",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Copy data1",
@@ -268,7 +155,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "Nested Json to orc",
 						"type": "DataFlowReference"
 					},
 					"compute": {
@@ -279,6 +166,29 @@
 				}
 			}
 		],
+		"variables": {
+			"id": {
+				"type": "String"
+			},
+			"dealers": {
+				"type": "String"
+			},
+			"id2": {
+				"type": "String"
+			},
+			"id3": {
+				"type": "String"
+			},
+			"id1": {
+				"type": "String"
+			},
+			"id4": {
+				"type": "String"
+			},
+			"id5": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Refresher"
 		},

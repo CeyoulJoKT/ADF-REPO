@@ -2,7 +2,7 @@
 	"name": "AzureSqlTable13",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureSqlDatabase1",
+			"referenceName": "AzureSqlDatabase2",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "flatterntable"
+			"table": "flaterntable"
 		}
 	}
 }

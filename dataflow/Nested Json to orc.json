@@ -1,6 +1,9 @@
 {
-	"name": "dataflow1",
+	"name": "Nested Json to orc",
 	"properties": {
+		"folder": {
+			"name": "Refreshercourse"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
@@ -15,7 +18,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable13",
+						"referenceName": "Orc1",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -49,14 +52,8 @@
 				"     skipDuplicateMapOutputs: false) ~> flatten3",
 				"flatten3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}

@@ -1,0 +1,188 @@
+{
+	"name": "pipeline5",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "id1",
+					"value": "SELECT e.employee_id, e.name AS employee_name, m.name AS manager_name\nFROM Employee e\nLEFT JOIN Employee m ON e.manager_id = m.employee_id;\n"
+				}
+			},
+			{
+				"name": "Set variable2",
+				"description": "",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "id2",
+					"value": "SELECT department, COUNT(*) AS employee_count\nFROM Employee\nGROUP BY department;\n"
+				}
+			},
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Set variable5",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable9",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Set variable3",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set variable2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "id3",
+					"value": "SELECT department, SUM(salary) AS total_salary\nFROM Employee\nGROUP BY department;\n"
+				}
+			},
+			{
+				"name": "Set variable4",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set variable3",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "id4",
+					"value": "SELECT employee_id, name, hire_date\nFROM Employee\nWHERE hire_date > '2015-01-01';\n"
+				}
+			},
+			{
+				"name": "Set variable5",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set variable4",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "id5",
+					"value": "SELECT e.employee_id, e.name, COUNT(r.employee_id) AS direct_reports\nFROM Employee e\nLEFT JOIN Employee r ON e.employee_id = r.manager_id\nGROUP BY e.employee_id, e.name;\n"
+				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"enableStaging": false
+				}
+			}
+		],
+		"variables": {
+			"id": {
+				"type": "String"
+			},
+			"dealers": {
+				"type": "String"
+			},
+			"id2": {
+				"type": "String"
+			},
+			"id3": {
+				"type": "String"
+			},
+			"id1": {
+				"type": "String"
+			},
+			"id4": {
+				"type": "String"
+			},
+			"id5": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Refresher"
+		},
+		"annotations": []
+	}
+}
