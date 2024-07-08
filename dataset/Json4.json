@@ -1,0 +1,152 @@
+{
+	"name": "Json4",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage7",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "sample.json",
+				"container": "testing"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"dealership": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"location": {
+							"type": "string"
+						},
+						"inventory": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string"
+									},
+									"make": {
+										"type": "string"
+									},
+									"model": {
+										"type": "string"
+									},
+									"year": {
+										"type": "integer"
+									},
+									"specs": {
+										"type": "object",
+										"properties": {
+											"engine": {
+												"type": "string"
+											},
+											"transmission": {
+												"type": "string"
+											},
+											"features": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												}
+											}
+										}
+									},
+									"price": {
+										"type": "integer"
+									},
+									"maintenanceRecords": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"date": {
+													"type": "string"
+												},
+												"service": {
+													"type": "string"
+												},
+												"details": {
+													"type": "object",
+													"properties": {
+														"serviceCenter": {
+															"type": "string"
+														},
+														"mileage": {
+															"type": "integer"
+														},
+														"cost": {
+															"type": "number"
+														}
+													}
+												}
+											}
+										}
+									},
+									"rentalInfo": {
+										"type": "object",
+										"properties": {
+											"availability": {
+												"type": "string"
+											},
+											"rentalRates": {
+												"type": "object",
+												"properties": {
+													"daily": {
+														"type": "integer"
+													},
+													"weekly": {
+														"type": "integer"
+													},
+													"monthly": {
+														"type": "integer"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"staff": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string"
+									},
+									"name": {
+										"type": "string"
+									},
+									"role": {
+										"type": "string"
+									},
+									"contact": {
+										"type": "object",
+										"properties": {
+											"email": {
+												"type": "string"
+											},
+											"phone": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
