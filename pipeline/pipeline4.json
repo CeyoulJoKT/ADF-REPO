@@ -1,0 +1,280 @@
+{
+	"name": "pipeline4",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['dealership']['name']"
+								},
+								"sink": {
+									"name": "dealership_name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['location']"
+								},
+								"sink": {
+									"name": "location"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['id']"
+								},
+								"sink": {
+									"name": "id"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['make']"
+								},
+								"sink": {
+									"name": "make"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['model']"
+								},
+								"sink": {
+									"name": "model"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['year']"
+								},
+								"sink": {
+									"name": "year"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['specs']['engine']"
+								},
+								"sink": {
+									"name": "engine"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['specs']['transmission']"
+								},
+								"sink": {
+									"name": "transmission"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['specs']['features'][0]"
+								},
+								"sink": {
+									"name": "items"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['price']"
+								},
+								"sink": {
+									"name": "price"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['maintenanceRecords'][0]['date']"
+								},
+								"sink": {
+									"name": "date"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['maintenanceRecords'][0]['service']"
+								},
+								"sink": {
+									"name": "service"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['maintenanceRecords'][0]['details']['serviceCenter']"
+								},
+								"sink": {
+									"name": "serviceCenter"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['maintenanceRecords'][0]['details']['mileage']"
+								},
+								"sink": {
+									"name": "mileage"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['maintenanceRecords'][0]['details']['cost']"
+								},
+								"sink": {
+									"name": "cost"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['rentalInfo']['availability']"
+								},
+								"sink": {
+									"name": "availability"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['rentalInfo']['rentalRates']['daily']"
+								},
+								"sink": {
+									"name": "daily"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['rentalInfo']['rentalRates']['weekly']"
+								},
+								"sink": {
+									"name": "weekly"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['inventory'][0]['rentalInfo']['rentalRates']['monthly']"
+								},
+								"sink": {
+									"name": "monthly"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['staff'][0]['id']"
+								},
+								"sink": {
+									"name": "dealership_staff'][0]['id"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['staff'][0]['name']"
+								},
+								"sink": {
+									"name": "dealership_staff'][0]['name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['staff'][0]['role']"
+								},
+								"sink": {
+									"name": "role"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['staff'][0]['contact']['email']"
+								},
+								"sink": {
+									"name": "email"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dealership']['staff'][0]['contact']['phone']"
+								},
+								"sink": {
+									"name": "phone"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json3",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SqlServerTable10",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "Refresher"
+		},
+		"annotations": []
+	}
+}

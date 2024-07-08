@@ -1,0 +1,38 @@
+{
+	"name": "Json3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage7",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "sample.json",
+				"container": "testing"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"language": {
+					"type": "string"
+				},
+				"id": {
+					"type": "string"
+				},
+				"bio": {
+					"type": "string"
+				},
+				"version": {
+					"type": "number"
+				}
+			}
+		}
+	}
+}
