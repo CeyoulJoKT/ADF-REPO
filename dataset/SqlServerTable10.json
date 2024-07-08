@@ -1,0 +1,16 @@
+{
+	"name": "SqlServerTable10",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer6",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "samplejson"
+		}
+	}
+}
