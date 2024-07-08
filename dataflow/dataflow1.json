@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SqlServerTable9",
+						"referenceName": "AzureSqlTable13",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -24,9 +24,6 @@
 			"transformations": [
 				{
 					"name": "flatten3"
-				},
-				{
-					"name": "flatten4"
 				}
 			],
 			"scriptLines": [
@@ -39,26 +36,18 @@
 				"     documentForm: 'singleDocument') ~> source1",
 				"source1 foldDown(unroll(dealership.inventory),",
 				"     mapColumn(",
-				"          dealership",
-				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten3",
-				"flatten3 foldDown(unroll(dealership.inventory.specs.features),",
-				"     mapColumn(",
 				"          id = dealership.inventory.id,",
 				"          make = dealership.inventory.make,",
 				"          model = dealership.inventory.model,",
 				"          price = dealership.inventory.price,",
-				"          engine = dealership.inventory.specs.engine,",
-				"          features = dealership.inventory.specs.features,",
-				"          transmission = dealership.inventory.specs.transmission,",
+				"          specs = dealership.inventory.specs,",
 				"          year = dealership.inventory.year,",
 				"          location = dealership.location,",
 				"          name = dealership.name",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten4",
-				"flatten4 sink(allowSchemaDrift: true,",
+				"     skipDuplicateMapOutputs: false) ~> flatten3",
+				"flatten3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -66,7 +55,8 @@
 				"     upsertable:false,",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 			]
 		}
 	}
