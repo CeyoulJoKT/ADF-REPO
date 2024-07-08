@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable10",
+						"referenceName": "DelimitedText15",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -24,9 +24,6 @@
 			"transformations": [
 				{
 					"name": "flatten2"
-				},
-				{
-					"name": "flatten3"
 				}
 			],
 			"scriptLines": [
@@ -37,28 +34,16 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'documentPerLine') ~> source1",
-				"source1 foldDown(unroll(dealership.inventory.maintenanceRecords),",
+				"source1 foldDown(unroll(dealership.inventory),",
 				"     mapColumn(",
 				"          dealership = dealership",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten2",
-				"flatten2 foldDown(unroll(dealership.inventory),",
-				"     mapColumn(",
-				"          dealership",
-				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten3",
-				"flatten3 sink(allowSchemaDrift: true,",
+				"flatten2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
