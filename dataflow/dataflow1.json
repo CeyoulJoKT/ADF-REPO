@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "Json4",
+						"referenceName": "Json5",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DelimitedText15",
+						"referenceName": "SqlServerTable9",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -23,25 +23,48 @@
 			],
 			"transformations": [
 				{
-					"name": "flatten2"
+					"name": "flatten3"
+				},
+				{
+					"name": "flatten4"
 				}
 			],
 			"scriptLines": [
 				"source(output(",
-				"          dealership as (name as string, location as string, inventory as (id as string, make as string, model as string, year as integer, specs as (engine as string, transmission as string, features as string[]), price as integer, maintenanceRecords as (date as string, service as string, details as (serviceCenter as string, mileage as integer, cost as double))[], rentalInfo as (availability as string, rentalRates as (daily as integer, weekly as integer, monthly as integer)))[], staff as (id as string, name as string, role as string, contact as (email as string, phone as string))[])",
+				"          dealership as (inventory as (id as short, make as string, model as string, price as short, specs as (engine as string, features as string[], transmission as string), year as short)[], location as string, name as string)",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'documentPerLine') ~> source1",
+				"     documentForm: 'singleDocument') ~> source1",
 				"source1 foldDown(unroll(dealership.inventory),",
 				"     mapColumn(",
-				"          dealership = dealership",
+				"          dealership",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten2",
-				"flatten2 sink(allowSchemaDrift: true,",
+				"     skipDuplicateMapOutputs: false) ~> flatten3",
+				"flatten3 foldDown(unroll(dealership.inventory.specs.features),",
+				"     mapColumn(",
+				"          id = dealership.inventory.id,",
+				"          make = dealership.inventory.make,",
+				"          model = dealership.inventory.model,",
+				"          price = dealership.inventory.price,",
+				"          engine = dealership.inventory.specs.engine,",
+				"          features = dealership.inventory.specs.features,",
+				"          transmission = dealership.inventory.specs.transmission,",
+				"          year = dealership.inventory.year,",
+				"          location = dealership.location,",
+				"          name = dealership.name",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten4",
+				"flatten4 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
