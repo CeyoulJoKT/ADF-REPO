@@ -39,6 +39,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
 		},
+		"AzureSqlDatabase2_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AzureSqlDatabase2'"
+		},
 		"SqlServer1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer1'",
@@ -76,6 +80,18 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer6'"
 		},
+		"AzureSqlDatabase2_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "azureserver-011.database.windows.net"
+		},
+		"AzureSqlDatabase2_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Refresher"
+		},
+		"AzureSqlDatabase2_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "azureserver01"
+		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dummy.restapiexample.com/api/v1/employee"
@@ -91,6 +107,10 @@
 		"RestService4_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://reqres.in/api/unknown/"
+		},
+		"RestService5_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://newsapi.org/v2/everything?q=keyword"
 		},
 		"SqlServer1_properties_typeProperties_userName": {
 			"type": "string",
@@ -174,15 +194,11 @@
 		},
 		"SqlServer6_properties_typeProperties_database": {
 			"type": "string",
-			"defaultValue": "test4"
+			"defaultValue": "cars"
 		},
 		"SqlServer6_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "NIGHTFURY\\Ceyoul"
-		},
-		"RestService5_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://newsapi.org/v2/everything?q=keyword"
 		},
 		"containerUri": {
 			"type": "string",
@@ -234,6 +250,18 @@
 					},
 					"AzureSqlDatabase1_connectionString": {
 						"value": "[parameters('AzureSqlDatabase1_connectionString')]"
+					},
+					"AzureSqlDatabase2_password": {
+						"value": "[parameters('AzureSqlDatabase2_password')]"
+					},
+					"AzureSqlDatabase2_properties_typeProperties_server": {
+						"value": "[parameters('AzureSqlDatabase2_properties_typeProperties_server')]"
+					},
+					"AzureSqlDatabase2_properties_typeProperties_database": {
+						"value": "[parameters('AzureSqlDatabase2_properties_typeProperties_database')]"
+					},
+					"AzureSqlDatabase2_properties_typeProperties_userName": {
+						"value": "[parameters('AzureSqlDatabase2_properties_typeProperties_userName')]"
 					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"
@@ -303,18 +331,6 @@
 					"SqlServer4_password": {
 						"value": "[parameters('SqlServer4_password')]"
 					},
-					"SqlServer4ADV1_password": {
-						"value": "[parameters('SqlServer4ADV1_password')]"
-					},
-					"SqlServer4ADV2_password": {
-						"value": "[parameters('SqlServer4ADV2_password')]"
-					},
-					"SqlServer5_password": {
-						"value": "[parameters('SqlServer5_password')]"
-					},
-					"SqlServer6_password": {
-						"value": "[parameters('SqlServer6_password')]"
-					},
 					"SqlServer1_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer1_properties_typeProperties_userName')]"
 					},
@@ -344,6 +360,38 @@
 					},
 					"SqlServer4_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer4_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'DF-TraiingResource_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "DF-TraiingResource_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"SqlServer4ADV1_password": {
+						"value": "[parameters('SqlServer4ADV1_password')]"
+					},
+					"SqlServer4ADV2_password": {
+						"value": "[parameters('SqlServer4ADV2_password')]"
+					},
+					"SqlServer5_password": {
+						"value": "[parameters('SqlServer5_password')]"
+					},
+					"SqlServer6_password": {
+						"value": "[parameters('SqlServer6_password')]"
 					},
 					"SqlServer4ADV1_properties_typeProperties_server": {
 						"value": "[parameters('SqlServer4ADV1_properties_typeProperties_server')]"
@@ -384,26 +432,6 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'DF-TraiingResource_ArmTemplate_1')]"
-			]
-		},
-		{
-			"name": "DF-TraiingResource_ArmTemplate_3",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2018-02-01",
-			"properties": {
-				"mode": "incremental",
-				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"factoryName": {
-						"value": "[parameters('factoryName')]"
-					}
-				}
-			},
-			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'DF-TraiingResource_ArmTemplate_2')]"
 			]
 		},
@@ -425,6 +453,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'DF-TraiingResource_ArmTemplate_3')]"
+			]
+		},
+		{
+			"name": "DF-TraiingResource_ArmTemplate_5",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_5.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'DF-TraiingResource_ArmTemplate_4')]"
 			]
 		}
 	]

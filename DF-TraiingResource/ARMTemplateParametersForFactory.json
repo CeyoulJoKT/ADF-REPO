@@ -29,6 +29,9 @@
 		"AzureSqlDatabase1_connectionString": {
 			"value": ""
 		},
+		"AzureSqlDatabase2_password": {
+			"value": ""
+		},
 		"SqlServer1_connectionString": {
 			"value": "Integrated Security=True;Data Source=NIGHTFURY\\SQLEXPRESS02;Initial Catalog=test4"
 		},
@@ -56,6 +59,15 @@
 		"SqlServer6_password": {
 			"value": ""
 		},
+		"AzureSqlDatabase2_properties_typeProperties_server": {
+			"value": "azureserver-011.database.windows.net"
+		},
+		"AzureSqlDatabase2_properties_typeProperties_database": {
+			"value": "Refresher"
+		},
+		"AzureSqlDatabase2_properties_typeProperties_userName": {
+			"value": "azureserver01"
+		},
 		"RestService1_properties_typeProperties_url": {
 			"value": "https://dummy.restapiexample.com/api/v1/employee"
 		},
@@ -67,6 +79,9 @@
 		},
 		"RestService4_properties_typeProperties_url": {
 			"value": "https://reqres.in/api/unknown/"
+		},
+		"RestService5_properties_typeProperties_url": {
+			"value": "https://newsapi.org/v2/everything?q=keyword"
 		},
 		"SqlServer1_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\ceyoul"
@@ -129,13 +144,10 @@
 			"value": "NIGHTFURY\\SQLEXPRESS02"
 		},
 		"SqlServer6_properties_typeProperties_database": {
-			"value": "test4"
+			"value": "cars"
 		},
 		"SqlServer6_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\Ceyoul"
-		},
-		"RestService5_properties_typeProperties_url": {
-			"value": "https://newsapi.org/v2/everything?q=keyword"
 		}
 	}
 }
