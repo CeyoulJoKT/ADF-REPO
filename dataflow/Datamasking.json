@@ -43,13 +43,6 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink2"
-				},
-				{
-					"dataset": {
-						"referenceName": "AzureSqlTable10",
-						"type": "DatasetReference"
-					},
-					"name": "sink4"
 				}
 			],
 			"transformations": [
@@ -204,17 +197,7 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink2",
-				"sort4 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink4"
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
 			]
 		}
 	}
