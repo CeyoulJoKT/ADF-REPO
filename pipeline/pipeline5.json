@@ -13,29 +13,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "id1",
-					"value": "SELECT e.employee_id, e.name AS employee_name, m.name AS manager_name\nFROM Employee e\nLEFT JOIN Employee m ON e.manager_id = m.employee_id;\n"
-				}
-			},
-			{
-				"name": "Set variable2",
-				"description": "",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Set variable1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "id2",
-					"value": "SELECT department, COUNT(*) AS employee_count\nFROM Employee\nGROUP BY department;\n"
+					"value": "SELECT \n    -- Query 1: Basic Employee Details\n    e.employee_id AS employee_id,\n    e.name AS employee_name,\n    ISNULL(m.name, 'No Manager') AS manager_name,"
 				}
 			},
 			{
@@ -43,7 +21,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "Set variable5",
+						"activity": "Set variable6",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -61,7 +39,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat(variables('id1'),variables('id2'),variables('id3'),variables('id4'),variables('id5'))",
+							"value": "@concat(variables('id1'),variables('id3'),variables('id4'),variables('id5'),variables('id6'))",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -79,7 +57,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Set variable2",
+						"activity": "Set variable1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -92,7 +70,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "id3",
-					"value": "SELECT department, SUM(salary) AS total_salary\nFROM Employee\nGROUP BY department;\n"
+					"value": {
+						"value": "(SELECT COUNT(*) FROM Employee) AS total_employees,\n\n",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -113,7 +94,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "id4",
-					"value": "SELECT employee_id, name, hire_date\nFROM Employee\nWHERE hire_date > '2015-01-01';\n"
+					"value": {
+						"value": "d.department,\n    COUNT(*) AS department_employee_count,",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -134,32 +118,34 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "id5",
-					"value": "SELECT e.employee_id, e.name, COUNT(r.employee_id) AS direct_reports\nFROM Employee e\nLEFT JOIN Employee r ON e.employee_id = r.manager_id\nGROUP BY e.employee_id, e.name;\n"
+					"value": {
+						"value": "SUM(e.salary) AS department_total_salary,\n    AVG(e.salary) AS department_average_salary,",
+						"type": "Expression"
+					}
 				}
 			},
 			{
-				"name": "Copy data1",
-				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
+				"name": "Set variable6",
+				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "Set variable5",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					}
 				],
 				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"enableStaging": false
+					"variableName": "id6",
+					"value": {
+						"value": "(SELECT COUNT(*) FROM Employee r WHERE r.manager_id = e.employee_id) AS direct_reports_count\n\nFROM \n    Employee e\nLEFT JOIN \n    Employee m ON e.manager_id = m.employee_id\nLEFT JOIN \n    (\n        SELECT \n            department,\n            COUNT(*) AS department_employee_count\n        FROM \n            Employee\n        GROUP BY \n            department\n    ) d ON e.department = d.department\n\nGROUP BY \n    e.employee_id, e.name, m.name, d.department, e.salary\n\nORDER BY \n    e.employee_id;",
+						"type": "Expression"
+					}
 				}
 			}
 		],
@@ -183,6 +169,9 @@
 				"type": "String"
 			},
 			"id5": {
+				"type": "String"
+			},
+			"id6": {
 				"type": "String"
 			}
 		},
