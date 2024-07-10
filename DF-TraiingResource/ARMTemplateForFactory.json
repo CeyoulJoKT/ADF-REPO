@@ -5886,6 +5886,45 @@
 				"[concat(variables('factoryId'), '/datasets/DelimitedText14')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline5')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web1",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "POST",
+							"headers": {},
+							"url": "https://prod2-26.southindia.logic.azure.com:443/workflows/80d4c7fc721043ed9cfca06646269803/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=z_9e0y425jOC_NiwS8GZes5kBjacx8m3M8_YztH8tm8",
+							"body": {
+								"value": "{\n    \"Reciever\":\"sharmila.s@datasemantics.co\",\n    \"subject\":\"Task Completed\",\n    \"body\":\"Task has been completed using web activity\"\n}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Refresher"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
 		}
 	]
 }

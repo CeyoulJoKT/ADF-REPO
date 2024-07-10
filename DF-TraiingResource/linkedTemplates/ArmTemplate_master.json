@@ -328,9 +328,6 @@
 					"SqlServer3_password": {
 						"value": "[parameters('SqlServer3_password')]"
 					},
-					"SqlServer4_password": {
-						"value": "[parameters('SqlServer4_password')]"
-					},
 					"SqlServer1_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer1_properties_typeProperties_userName')]"
 					},
@@ -351,15 +348,6 @@
 					},
 					"SqlServer3_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer3_properties_typeProperties_userName')]"
-					},
-					"SqlServer4_properties_typeProperties_server": {
-						"value": "[parameters('SqlServer4_properties_typeProperties_server')]"
-					},
-					"SqlServer4_properties_typeProperties_database": {
-						"value": "[parameters('SqlServer4_properties_typeProperties_database')]"
-					},
-					"SqlServer4_properties_typeProperties_userName": {
-						"value": "[parameters('SqlServer4_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -381,6 +369,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"SqlServer4_password": {
+						"value": "[parameters('SqlServer4_password')]"
+					},
 					"SqlServer4ADV1_password": {
 						"value": "[parameters('SqlServer4ADV1_password')]"
 					},
@@ -392,6 +383,15 @@
 					},
 					"SqlServer6_password": {
 						"value": "[parameters('SqlServer6_password')]"
+					},
+					"SqlServer4_properties_typeProperties_server": {
+						"value": "[parameters('SqlServer4_properties_typeProperties_server')]"
+					},
+					"SqlServer4_properties_typeProperties_database": {
+						"value": "[parameters('SqlServer4_properties_typeProperties_database')]"
+					},
+					"SqlServer4_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServer4_properties_typeProperties_userName')]"
 					},
 					"SqlServer4ADV1_properties_typeProperties_server": {
 						"value": "[parameters('SqlServer4ADV1_properties_typeProperties_server')]"

@@ -13,6 +13,217 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/pipeline4')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['dealership']['name']"
+										},
+										"sink": {
+											"name": "name"
+										}
+									},
+									{
+										"source": {
+											"path": "$['dealership']['location']"
+										},
+										"sink": {
+											"name": "location"
+										}
+									},
+									{
+										"source": {
+											"path": "$['dealership']['inventory'][0]['id']"
+										},
+										"sink": {
+											"name": "id"
+										}
+									},
+									{
+										"source": {
+											"path": "$['dealership']['inventory'][0]['make']"
+										},
+										"sink": {
+											"name": "make"
+										}
+									},
+									{
+										"source": {
+											"path": "$['dealership']['inventory'][0]['model']"
+										},
+										"sink": {
+											"name": "model"
+										}
+									},
+									{
+										"source": {
+											"path": "$['dealership']['inventory'][0]['year']"
+										},
+										"sink": {
+											"name": "year"
+										}
+									},
+									{
+										"source": {
+											"path": "$['dealership']['inventory'][0]['specs']['engine']"
+										},
+										"sink": {
+											"name": "engine"
+										}
+									},
+									{
+										"source": {
+											"path": "$['dealership']['inventory'][0]['specs']['transmission']"
+										},
+										"sink": {
+											"name": "transmission"
+										}
+									},
+									{
+										"source": {
+											"path": "$['dealership']['inventory'][0]['specs']['features'][0]"
+										},
+										"sink": {
+											"name": "items"
+										}
+									},
+									{
+										"source": {
+											"path": "$['dealership']['inventory'][0]['price']"
+										},
+										"sink": {
+											"name": "price"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Json3",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSqlTable13",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Nested Json to orc",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"id": {
+						"type": "String"
+					},
+					"dealers": {
+						"type": "String"
+					},
+					"id2": {
+						"type": "String"
+					},
+					"id3": {
+						"type": "String"
+					},
+					"id1": {
+						"type": "String"
+					},
+					"id4": {
+						"type": "String"
+					},
+					"id5": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Refresher"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/tabletotable')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
