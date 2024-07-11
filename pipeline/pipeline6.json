@@ -87,6 +87,10 @@
 										"Schemaname": {
 											"value": "@item().table_schema",
 											"type": "Expression"
+										},
+										"Tablename": {
+											"value": "@item().table_name",
+											"type": "Expression"
 										}
 									}
 								}
@@ -94,7 +98,17 @@
 							"outputs": [
 								{
 									"referenceName": "SqlServerTable11",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"Table_tablename": {
+											"value": "@item().table_name",
+											"type": "Expression"
+										},
+										"Schema": {
+											"value": "@item().table_schema",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
