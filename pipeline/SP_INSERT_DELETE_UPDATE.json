@@ -52,37 +52,17 @@
 			{
 				"name": "30 Sec",
 				"type": "Wait",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"waitTimeInSeconds": 20
-				}
-			},
-			{
-				"name": "SP_CHECK_copy1",
-				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Deletion",
+						"activity": "Insertion",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					}
 				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[sp_dim_tblEmployee]"
-				},
-				"linkedServiceName": {
-					"referenceName": "SqlServer7Stage",
-					"type": "LinkedServiceReference"
+					"waitTimeInSeconds": 20
 				}
 			},
 			{
@@ -90,7 +70,7 @@
 				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "SP_CHECK_copy1",
+						"activity": "Deletion",
 						"dependencyConditions": [
 							"Succeeded"
 						]
