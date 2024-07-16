@@ -1,0 +1,81 @@
+{
+	"name": "SqlServerTable13",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer7Stage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "StudentId",
+				"type": "varchar"
+			},
+			{
+				"name": "StudentCode",
+				"type": "varchar"
+			},
+			{
+				"name": "StudentName",
+				"type": "varchar"
+			},
+			{
+				"name": "date",
+				"type": "date"
+			},
+			{
+				"name": "language",
+				"type": "varchar"
+			},
+			{
+				"name": "Maths",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "physics",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "chemistry",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Computerscience",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "stageCreateddate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "CreatedBy",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UpdatedDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "UpdatedBy",
+				"type": "nvarchar"
+			},
+			{
+				"name": "IsDeleted",
+				"type": "bit"
+			}
+		],
+		"typeProperties": {
+			"schema": "dim",
+			"table": "Students_Data"
+		}
+	}
+}
