@@ -138,61 +138,30 @@
 				}
 			},
 			{
-				"name": "INSERT_UPDATE",
-				"type": "SqlServerStoredProcedure",
+				"name": "Execute Pipeline1",
+				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "6 Sec",
+						"activity": "Wait1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					}
 				],
 				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
 					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[UpsertStudentData]"
-				},
-				"linkedServiceName": {
-					"referenceName": "SqlServer7Stage",
-					"type": "LinkedServiceReference"
+					"pipeline": {
+						"referenceName": "SP_INSERT_DELETE_UPDATE",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
 				}
 			},
 			{
-				"name": "SP_CHECK",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "INSERT_UPDATE",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[dbo].[sp_dim_tblEmployee]"
-				},
-				"linkedServiceName": {
-					"referenceName": "SqlServer7Stage",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
-				"name": "SP_CHECK_copy1",
+				"name": "Stored procedure1",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
@@ -219,11 +188,11 @@
 				}
 			},
 			{
-				"name": "6 Sec",
+				"name": "Wait1",
 				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "ForEach1",
+						"activity": "Stored procedure1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -231,50 +200,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"waitTimeInSeconds": 6
-				}
-			},
-			{
-				"name": "Deletion",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "20 Sec",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[dbo].[DeleteStudentData]"
-				},
-				"linkedServiceName": {
-					"referenceName": "SqlServer7Stage",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
-				"name": "20 Sec",
-				"type": "Wait",
-				"dependsOn": [
-					{
-						"activity": "SP_CHECK_copy1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"waitTimeInSeconds": 20
+					"waitTimeInSeconds": 10
 				}
 			}
 		],
