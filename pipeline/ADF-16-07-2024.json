@@ -190,8 +190,8 @@
 				}
 			},
 			{
-				"name": "Execute Pipeline1",
-				"type": "ExecutePipeline",
+				"name": "INSERT_UPDATE_DELETE",
+				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
 						"activity": "ForEach1",
@@ -201,15 +201,46 @@
 					}
 				],
 				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
 					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"pipeline": {
-						"referenceName": "SP_INSERT_DELETE_UPDATE",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
+					"storedProcedureName": "[dbo].[UpsertStudentData]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SqlServer7Stage",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "SP_CHECK",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "INSERT_UPDATE_DELETE",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[sp_dim_tblEmployee]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SqlServer7Stage",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
