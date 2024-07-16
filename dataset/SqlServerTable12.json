@@ -1,0 +1,16 @@
+{
+	"name": "SqlServerTable12",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer7Stage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "Stage",
+			"table": "sample"
+		}
+	}
+}
