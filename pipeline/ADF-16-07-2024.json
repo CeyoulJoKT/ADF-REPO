@@ -125,7 +125,7 @@
 									},
 									"ComputerScience": {
 										"value": {
-											"value": "@item().computersicence",
+											"value": "@item().computerscience",
 											"type": "Expression"
 										},
 										"type": "Int32"
@@ -146,14 +146,14 @@
 									},
 									"Maths": {
 										"value": {
-											"value": "@item().Maths",
+											"value": "@item().maths",
 											"type": "Expression"
 										},
 										"type": "Int32"
 									},
 									"Physics": {
 										"value": {
-											"value": "@item().phiysics",
+											"value": "@item().Phiysics",
 											"type": "Expression"
 										},
 										"type": "Int32"
@@ -167,7 +167,7 @@
 									},
 									"StudentId": {
 										"value": {
-											"value": "@item().StudentId",
+											"value": "@item().StudentID",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -190,17 +190,10 @@
 				}
 			},
 			{
-				"name": "Until1",
-				"type": "Until",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"timeout": "0.12:00:00"
-				}
-			},
-			{
 				"name": "Execute Pipeline1",
 				"type": "ExecutePipeline",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "ForEach1",
