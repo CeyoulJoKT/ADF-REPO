@@ -43,6 +43,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AzureSqlDatabase2'"
 		},
+		"AzureSqlDatabase3_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AzureSqlDatabase3'"
+		},
 		"SqlServer1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer1'",
@@ -80,6 +84,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer6'"
 		},
+		"SqlServer7Stage_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SqlServer7Stage'"
+		},
 		"AzureSqlDatabase2_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "azureserver-011.database.windows.net"
@@ -89,6 +97,18 @@
 			"defaultValue": "Refresher"
 		},
 		"AzureSqlDatabase2_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "azureserver01"
+		},
+		"AzureSqlDatabase3_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "azureserver-011.database.windows.net"
+		},
+		"AzureSqlDatabase3_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "sample"
+		},
+		"AzureSqlDatabase3_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "azureserver01"
 		},
@@ -200,6 +220,18 @@
 			"type": "string",
 			"defaultValue": "NIGHTFURY\\Ceyoul"
 		},
+		"SqlServer7Stage_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "NIGHTFURY\\SQLEXPRESS02"
+		},
+		"SqlServer7Stage_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "stage_sample"
+		},
+		"SqlServer7Stage_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "NIGHTFURY\\Ceyoul"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -254,6 +286,9 @@
 					"AzureSqlDatabase2_password": {
 						"value": "[parameters('AzureSqlDatabase2_password')]"
 					},
+					"AzureSqlDatabase3_password": {
+						"value": "[parameters('AzureSqlDatabase3_password')]"
+					},
 					"AzureSqlDatabase2_properties_typeProperties_server": {
 						"value": "[parameters('AzureSqlDatabase2_properties_typeProperties_server')]"
 					},
@@ -262,6 +297,15 @@
 					},
 					"AzureSqlDatabase2_properties_typeProperties_userName": {
 						"value": "[parameters('AzureSqlDatabase2_properties_typeProperties_userName')]"
+					},
+					"AzureSqlDatabase3_properties_typeProperties_server": {
+						"value": "[parameters('AzureSqlDatabase3_properties_typeProperties_server')]"
+					},
+					"AzureSqlDatabase3_properties_typeProperties_database": {
+						"value": "[parameters('AzureSqlDatabase3_properties_typeProperties_database')]"
+					},
+					"AzureSqlDatabase3_properties_typeProperties_userName": {
+						"value": "[parameters('AzureSqlDatabase3_properties_typeProperties_userName')]"
 					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"
@@ -315,39 +359,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"SqlServer1_connectionString": {
-						"value": "[parameters('SqlServer1_connectionString')]"
-					},
-					"SqlServer1_password": {
-						"value": "[parameters('SqlServer1_password')]"
-					},
-					"SqlServer2_password": {
-						"value": "[parameters('SqlServer2_password')]"
-					},
-					"SqlServer3_password": {
-						"value": "[parameters('SqlServer3_password')]"
-					},
-					"SqlServer1_properties_typeProperties_userName": {
-						"value": "[parameters('SqlServer1_properties_typeProperties_userName')]"
-					},
-					"SqlServer2_properties_typeProperties_server": {
-						"value": "[parameters('SqlServer2_properties_typeProperties_server')]"
-					},
-					"SqlServer2_properties_typeProperties_database": {
-						"value": "[parameters('SqlServer2_properties_typeProperties_database')]"
-					},
-					"SqlServer2_properties_typeProperties_userName": {
-						"value": "[parameters('SqlServer2_properties_typeProperties_userName')]"
-					},
-					"SqlServer3_properties_typeProperties_server": {
-						"value": "[parameters('SqlServer3_properties_typeProperties_server')]"
-					},
-					"SqlServer3_properties_typeProperties_database": {
-						"value": "[parameters('SqlServer3_properties_typeProperties_database')]"
-					},
-					"SqlServer3_properties_typeProperties_userName": {
-						"value": "[parameters('SqlServer3_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -369,6 +380,18 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"SqlServer1_connectionString": {
+						"value": "[parameters('SqlServer1_connectionString')]"
+					},
+					"SqlServer1_password": {
+						"value": "[parameters('SqlServer1_password')]"
+					},
+					"SqlServer2_password": {
+						"value": "[parameters('SqlServer2_password')]"
+					},
+					"SqlServer3_password": {
+						"value": "[parameters('SqlServer3_password')]"
+					},
 					"SqlServer4_password": {
 						"value": "[parameters('SqlServer4_password')]"
 					},
@@ -383,6 +406,30 @@
 					},
 					"SqlServer6_password": {
 						"value": "[parameters('SqlServer6_password')]"
+					},
+					"SqlServer7Stage_password": {
+						"value": "[parameters('SqlServer7Stage_password')]"
+					},
+					"SqlServer1_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServer1_properties_typeProperties_userName')]"
+					},
+					"SqlServer2_properties_typeProperties_server": {
+						"value": "[parameters('SqlServer2_properties_typeProperties_server')]"
+					},
+					"SqlServer2_properties_typeProperties_database": {
+						"value": "[parameters('SqlServer2_properties_typeProperties_database')]"
+					},
+					"SqlServer2_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServer2_properties_typeProperties_userName')]"
+					},
+					"SqlServer3_properties_typeProperties_server": {
+						"value": "[parameters('SqlServer3_properties_typeProperties_server')]"
+					},
+					"SqlServer3_properties_typeProperties_database": {
+						"value": "[parameters('SqlServer3_properties_typeProperties_database')]"
+					},
+					"SqlServer3_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServer3_properties_typeProperties_userName')]"
 					},
 					"SqlServer4_properties_typeProperties_server": {
 						"value": "[parameters('SqlServer4_properties_typeProperties_server')]"
@@ -428,6 +475,15 @@
 					},
 					"SqlServer6_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer6_properties_typeProperties_userName')]"
+					},
+					"SqlServer7Stage_properties_typeProperties_server": {
+						"value": "[parameters('SqlServer7Stage_properties_typeProperties_server')]"
+					},
+					"SqlServer7Stage_properties_typeProperties_database": {
+						"value": "[parameters('SqlServer7Stage_properties_typeProperties_database')]"
+					},
+					"SqlServer7Stage_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServer7Stage_properties_typeProperties_userName')]"
 					}
 				}
 			},

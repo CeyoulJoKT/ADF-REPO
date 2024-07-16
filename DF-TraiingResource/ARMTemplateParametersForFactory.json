@@ -32,6 +32,9 @@
 		"AzureSqlDatabase2_password": {
 			"value": ""
 		},
+		"AzureSqlDatabase3_password": {
+			"value": ""
+		},
 		"SqlServer1_connectionString": {
 			"value": "Integrated Security=True;Data Source=NIGHTFURY\\SQLEXPRESS02;Initial Catalog=test4"
 		},
@@ -59,6 +62,9 @@
 		"SqlServer6_password": {
 			"value": ""
 		},
+		"SqlServer7Stage_password": {
+			"value": ""
+		},
 		"AzureSqlDatabase2_properties_typeProperties_server": {
 			"value": "azureserver-011.database.windows.net"
 		},
@@ -66,6 +72,15 @@
 			"value": "Refresher"
 		},
 		"AzureSqlDatabase2_properties_typeProperties_userName": {
+			"value": "azureserver01"
+		},
+		"AzureSqlDatabase3_properties_typeProperties_server": {
+			"value": "azureserver-011.database.windows.net"
+		},
+		"AzureSqlDatabase3_properties_typeProperties_database": {
+			"value": "sample"
+		},
+		"AzureSqlDatabase3_properties_typeProperties_userName": {
 			"value": "azureserver01"
 		},
 		"RestService1_properties_typeProperties_url": {
@@ -147,6 +162,15 @@
 			"value": "cars"
 		},
 		"SqlServer6_properties_typeProperties_userName": {
+			"value": "NIGHTFURY\\Ceyoul"
+		},
+		"SqlServer7Stage_properties_typeProperties_server": {
+			"value": "NIGHTFURY\\SQLEXPRESS02"
+		},
+		"SqlServer7Stage_properties_typeProperties_database": {
+			"value": "stage_sample"
+		},
+		"SqlServer7Stage_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\Ceyoul"
 		}
 	}
