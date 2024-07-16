@@ -5,6 +5,8 @@
 			{
 				"name": "Copy data1",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -25,7 +27,8 @@
 					},
 					"sink": {
 						"type": "SqlServerSink",
-						"sqlWriterStoredProcedureName": "[stage].[LoadDataWithCurrentDate]",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate"
 					},
 					"enableStaging": false,
@@ -50,6 +53,163 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[stage].[LoadDataWithCurrentDate]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SqlServer7Stage",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ExcelSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"dataset": {
+						"referenceName": "Excel2",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"activities": [
+						{
+							"name": "Stored procedure2",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[InsertStudentDataWithDate]",
+								"storedProcedureParameters": {
+									"Chemistry": {
+										"value": {
+											"value": "@item().chemistry",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"ComputerScience": {
+										"value": {
+											"value": "@item().computersicence",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"Date": {
+										"value": {
+											"value": "@item().date",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"Language": {
+										"value": {
+											"value": "@item().language",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"Maths": {
+										"value": {
+											"value": "@item().Maths",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"Physics": {
+										"value": {
+											"value": "@item().phiysics",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"StudentCode": {
+										"value": {
+											"value": "@item().student code",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"StudentId": {
+										"value": {
+											"value": "@item().StudentId",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"StudentName": {
+										"value": {
+											"value": "@item().StudentName",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "SqlServer7Stage",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
 			}
 		],
 		"folder": {
