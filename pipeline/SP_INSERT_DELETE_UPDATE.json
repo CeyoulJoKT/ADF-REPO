@@ -54,7 +54,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "30 Sec ",
+						"activity": "30 Sec",
 						"dependencyConditions": [
 							"Succeeded"
 						]
