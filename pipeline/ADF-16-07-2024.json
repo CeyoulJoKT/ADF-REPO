@@ -125,7 +125,7 @@
 									},
 									"ComputerScience": {
 										"value": {
-											"value": "@item().computerscience",
+											"value": "@item().Computersicence",
 											"type": "Expression"
 										},
 										"type": "Int32"
@@ -192,8 +192,6 @@
 			{
 				"name": "Execute Pipeline1",
 				"type": "ExecutePipeline",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "ForEach1",
