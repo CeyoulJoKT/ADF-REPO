@@ -5,6 +5,8 @@
 			{
 				"name": "Csv-File-Lookup",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -33,6 +35,8 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Csv-File-Lookup",
@@ -140,6 +144,8 @@
 			{
 				"name": "Execute Pipeline1",
 				"type": "ExecutePipeline",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "ForEach1",
@@ -188,7 +194,8 @@
 					"dataset": {
 						"referenceName": "SqlServerTable13",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			},
 			{
@@ -222,7 +229,16 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[dbo].[UpdateTotalMarks]"
+								"storedProcedureName": "[dbo].[UpdateTotalMarks]",
+								"storedProcedureParameters": {
+									"StudentId": {
+										"type": "String"
+									},
+									"TotalMarks": {
+										"value": "",
+										"type": "String"
+									}
+								}
 							},
 							"linkedServiceName": {
 								"referenceName": "SqlServer7Stage",
@@ -235,6 +251,8 @@
 			{
 				"name": "ALTER TABLE",
 				"type": "Script",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Execute Pipeline1",
