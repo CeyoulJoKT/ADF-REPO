@@ -13,6 +13,86 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable5')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "varchar"
+					},
+					{
+						"name": "employee_salary",
+						"type": "varchar"
+					},
+					{
+						"name": "employee_age",
+						"type": "varchar"
+					},
+					{
+						"name": "profile_image",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "webinfo"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable6')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "ProductID",
+						"type": "varchar"
+					},
+					{
+						"name": "Date",
+						"type": "varchar"
+					},
+					{
+						"name": "Zip",
+						"type": "varchar"
+					},
+					{
+						"name": "Units",
+						"type": "varchar"
+					},
+					{
+						"name": "Revenue",
+						"type": "varchar"
+					},
+					{
+						"name": "Country",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "salesadf1"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SqlServerTable7')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -749,7 +829,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SqlServerTable12')]",
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable13')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -759,23 +839,88 @@
 				},
 				"annotations": [],
 				"type": "SqlServerTable",
-				"schema": [],
+				"schema": [
+					{
+						"name": "StudentId",
+						"type": "varchar"
+					},
+					{
+						"name": "StudentCode",
+						"type": "varchar"
+					},
+					{
+						"name": "StudentName",
+						"type": "varchar"
+					},
+					{
+						"name": "date",
+						"type": "date"
+					},
+					{
+						"name": "language",
+						"type": "varchar"
+					},
+					{
+						"name": "Maths",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "physics",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "chemistry",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Computerscience",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "stageCreateddate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "CreatedBy",
+						"type": "nvarchar"
+					},
+					{
+						"name": "UpdatedDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "UpdatedBy",
+						"type": "nvarchar"
+					},
+					{
+						"name": "IsDeleted",
+						"type": "bit"
+					}
+				],
 				"typeProperties": {
-					"schema": "Stage",
-					"table": "sample"
+					"schema": "dim",
+					"table": "Students_Data"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SP_INSERT_DELETE_UPDATE')]",
+			"name": "[concat(parameters('factoryName'), '/ADF-16-07-2024')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Insertion",
-						"type": "SqlServerStoredProcedure",
+						"name": "Csv-File-Lookup",
+						"type": "Lookup",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -786,19 +931,159 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"storedProcedureName": "[[dbo].[InsertStudentData]"
-						},
-						"linkedServiceName": {
-							"referenceName": "SqlServer7Stage",
-							"type": "LinkedServiceReference"
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"dataset": {
+								"referenceName": "Excel2",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
 						}
 					},
 					{
-						"name": "SP_CHECK",
-						"type": "SqlServerStoredProcedure",
+						"name": "ForEach1",
+						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "Insertion",
+								"activity": "Csv-File-Lookup",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Csv-File-Lookup').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Insert-Std-Data",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[InsertStudentDataWithDate]",
+										"storedProcedureParameters": {
+											"Chemistry": {
+												"value": {
+													"value": "@item().chemistry",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"ComputerScience": {
+												"value": {
+													"value": "@item().Computersicence",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"Date": {
+												"value": {
+													"value": "@item().date",
+													"type": "Expression"
+												},
+												"type": "DateTime"
+											},
+											"Language": {
+												"value": {
+													"value": "@item().language",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"Maths": {
+												"value": {
+													"value": "@item().maths",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"Physics": {
+												"value": {
+													"value": "@item().Phiysics",
+													"type": "Expression"
+												},
+												"type": "Int32"
+											},
+											"StudentCode": {
+												"value": {
+													"value": "@item().studentcode",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"StudentId": {
+												"value": {
+													"value": "@item().StudentID",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"StudentName": {
+												"value": {
+													"value": "@item().StudentName",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "SqlServer7Stage",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "ForEach1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "SP_INSERT_DELETE_UPDATE",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "ALTER TABLE",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -813,19 +1098,65 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"storedProcedureName": "[[dbo].[sp_dim_tblEmployee]"
-						},
-						"linkedServiceName": {
-							"referenceName": "SqlServer7Stage",
-							"type": "LinkedServiceReference"
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SqlServerTable13",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
 						}
 					},
 					{
-						"name": "Deletion",
-						"type": "SqlServerStoredProcedure",
+						"name": "ForEach2",
+						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "30 Sec ",
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup1').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Total_Marks",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[UpdateTotalMarks]"
+									},
+									"linkedServiceName": {
+										"referenceName": "SqlServer7Stage",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "ALTER TABLE",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Execute Pipeline1",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -839,126 +1170,37 @@
 							"secureInput": false
 						},
 						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[DeleteStudentData]"
-						},
 						"linkedServiceName": {
 							"referenceName": "SqlServer7Stage",
 							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "30 Sec",
-						"type": "Wait",
-						"dependsOn": [
-							{
-								"activity": "SP_CHECK",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"waitTimeInSeconds": 20
-						}
-					},
-					{
-						"name": "SP_CHECK_copy1",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Deletion",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
 						},
-						"userProperties": [],
 						"typeProperties": {
-							"storedProcedureName": "[[dbo].[sp_dim_tblEmployee]"
-						},
-						"linkedServiceName": {
-							"referenceName": "SqlServer7Stage",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "20 sec",
-						"type": "Wait",
-						"dependsOn": [
-							{
-								"activity": "SP_CHECK_copy1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"waitTimeInSeconds": 20
-						}
-					},
-					{
-						"name": "Update",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "20 sec",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[UpdateStudentData]"
-						},
-						"linkedServiceName": {
-							"referenceName": "SqlServer7Stage",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "10 sec",
-						"type": "Wait",
-						"dependsOn": [
-							{
-								"activity": "Update",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"waitTimeInSeconds": 10
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "ALTER TABLE [dim].[students_data]\nADD TotalMarks INT;\n"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
 						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"variables": {
+					"Insertion": {
+						"type": "String"
+					}
+				},
 				"folder": {
 					"name": "Refresher"
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SqlServerTable13')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Basic-Transformation')]",
@@ -1508,109 +1750,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/DataHash')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Dataflow Masking')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Data flow1",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Datamasking",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"source2": {},
-									"source3": {},
-									"sink1": {},
-									"sink2": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "DATAFLOW"
-				},
-				"annotations": [],
-				"lastPublishTime": "2024-05-28T10:03:34Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/Datamasking')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Dataflow-transformation')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Data flow1",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Data-transformations",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"sink1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "DATAFLOW"
-				},
-				"annotations": [],
-				"lastPublishTime": "2024-05-28T05:52:01Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/Data-transformations')]"
 			]
 		}
 	]
