@@ -979,6 +979,92 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable13')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer7Stage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "StudentId",
+						"type": "varchar"
+					},
+					{
+						"name": "StudentCode",
+						"type": "varchar"
+					},
+					{
+						"name": "StudentName",
+						"type": "varchar"
+					},
+					{
+						"name": "date",
+						"type": "date"
+					},
+					{
+						"name": "language",
+						"type": "varchar"
+					},
+					{
+						"name": "Maths",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "physics",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "chemistry",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Computerscience",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "stageCreateddate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "CreatedBy",
+						"type": "nvarchar"
+					},
+					{
+						"name": "UpdatedDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "UpdatedBy",
+						"type": "nvarchar"
+					},
+					{
+						"name": "IsDeleted",
+						"type": "bit"
+					}
+				],
+				"typeProperties": {
+					"schema": "dim",
+					"table": "Students_Data"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer7Stage')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SqlServerTable2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1054,48 +1140,6 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "salesadf1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServerTable4')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlServer1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "ProductID",
-						"type": "varchar"
-					},
-					{
-						"name": "Date",
-						"type": "varchar"
-					},
-					{
-						"name": "Zip",
-						"type": "varchar"
-					},
-					{
-						"name": "Units",
-						"type": "varchar"
-					},
-					{
-						"name": "Revenue",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "webinfo2"
 				}
 			},
 			"dependsOn": [

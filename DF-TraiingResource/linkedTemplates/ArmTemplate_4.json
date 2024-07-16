@@ -13,6 +13,46 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable4')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "ProductID",
+						"type": "varchar"
+					},
+					{
+						"name": "Date",
+						"type": "varchar"
+					},
+					{
+						"name": "Zip",
+						"type": "varchar"
+					},
+					{
+						"name": "Units",
+						"type": "varchar"
+					},
+					{
+						"name": "Revenue",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "webinfo2"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SqlServerTable5')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -829,90 +869,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SqlServerTable13')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlServer7Stage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "StudentId",
-						"type": "varchar"
-					},
-					{
-						"name": "StudentCode",
-						"type": "varchar"
-					},
-					{
-						"name": "StudentName",
-						"type": "varchar"
-					},
-					{
-						"name": "date",
-						"type": "date"
-					},
-					{
-						"name": "language",
-						"type": "varchar"
-					},
-					{
-						"name": "Maths",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "physics",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "chemistry",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Computerscience",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "stageCreateddate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "CreatedBy",
-						"type": "nvarchar"
-					},
-					{
-						"name": "UpdatedDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "UpdatedBy",
-						"type": "nvarchar"
-					},
-					{
-						"name": "IsDeleted",
-						"type": "bit"
-					}
-				],
-				"typeProperties": {
-					"schema": "dim",
-					"table": "Students_Data"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/ADF-16-07-2024')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -948,7 +904,7 @@
 						}
 					},
 					{
-						"name": "ForEach1",
+						"name": "Inserting_to_SQL",
 						"type": "ForEach",
 						"dependsOn": [
 							{
@@ -1059,7 +1015,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "ForEach1",
+								"activity": "Inserting_to_SQL",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1079,7 +1035,7 @@
 						}
 					},
 					{
-						"name": "Lookup1",
+						"name": "StudentsID_Fetch",
 						"type": "Lookup",
 						"dependsOn": [
 							{
@@ -1107,15 +1063,16 @@
 								"referenceName": "SqlServerTable13",
 								"type": "DatasetReference",
 								"parameters": {}
-							}
+							},
+							"firstRowOnly": false
 						}
 					},
 					{
-						"name": "ForEach2",
+						"name": "Assiging_Marks",
 						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "Lookup1",
+								"activity": "StudentsID_Fetch",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1124,7 +1081,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('Lookup1').output.value",
+								"value": "@activity('StudentsID_Fetch').output.value",
 								"type": "Expression"
 							},
 							"activities": [
@@ -1141,7 +1098,16 @@
 									},
 									"userProperties": [],
 									"typeProperties": {
-										"storedProcedureName": "[[dbo].[UpdateTotalMarks]"
+										"storedProcedureName": "[[dbo].[UpdateTotalMarks]",
+										"storedProcedureParameters": {
+											"StudentId": {
+												"value": {
+													"value": "@item().studentid",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
 									},
 									"linkedServiceName": {
 										"referenceName": "SqlServer7Stage",
@@ -1198,9 +1164,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SqlServerTable13')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Basic-Transformation')]",
