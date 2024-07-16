@@ -59,7 +59,14 @@
 				"type": "SqlServerStoredProcedure",
 				"state": "Inactive",
 				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -77,7 +84,7 @@
 				}
 			},
 			{
-				"name": "Lookup1",
+				"name": "Csv-File-Lookup",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -109,7 +116,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "Csv-File-Lookup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -118,13 +125,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup1').output.value",
+						"value": "@activity('Csv-File-Lookup').output.value",
 						"type": "Expression"
 					},
 					"isSequential": false,
 					"activities": [
 						{
-							"name": "Stored procedure2",
+							"name": "Insert-Std-Data",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [],
 							"policy": {
@@ -182,7 +189,7 @@
 									},
 									"StudentCode": {
 										"value": {
-											"value": "@item().student code",
+											"value": "@item().studentcode",
 											"type": "Expression"
 										},
 										"type": "String"
