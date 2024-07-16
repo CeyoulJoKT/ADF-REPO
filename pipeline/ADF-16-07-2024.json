@@ -5,8 +5,6 @@
 			{
 				"name": "Csv-File-Lookup",
 				"type": "Lookup",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -33,10 +31,8 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "Inserting_to_SQL",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Csv-File-Lookup",
@@ -144,11 +140,9 @@
 			{
 				"name": "Execute Pipeline1",
 				"type": "ExecutePipeline",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
-						"activity": "ForEach1",
+						"activity": "Inserting_to_SQL",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -167,7 +161,7 @@
 				}
 			},
 			{
-				"name": "Lookup1",
+				"name": "StudentsID_Fetch",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -199,11 +193,11 @@
 				}
 			},
 			{
-				"name": "ForEach2",
+				"name": "Assiging_Marks",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "StudentsID_Fetch",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -212,7 +206,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup1').output.value",
+						"value": "@activity('StudentsID_Fetch').output.value",
 						"type": "Expression"
 					},
 					"activities": [
@@ -232,10 +226,10 @@
 								"storedProcedureName": "[dbo].[UpdateTotalMarks]",
 								"storedProcedureParameters": {
 									"StudentId": {
-										"type": "String"
-									},
-									"TotalMarks": {
-										"value": "",
+										"value": {
+											"value": "@item().studentid",
+											"type": "Expression"
+										},
 										"type": "String"
 									}
 								}
@@ -251,8 +245,6 @@
 			{
 				"name": "ALTER TABLE",
 				"type": "Script",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Execute Pipeline1",
