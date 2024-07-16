@@ -168,7 +168,7 @@
 			"value": "NIGHTFURY\\SQLEXPRESS02"
 		},
 		"SqlServer7Stage_properties_typeProperties_database": {
-			"value": "stage_sample"
+			"value": "ADF_REF"
 		},
 		"SqlServer7Stage_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\Ceyoul"

@@ -142,7 +142,7 @@
 		},
 		"SqlServer7Stage_properties_typeProperties_database": {
 			"type": "string",
-			"defaultValue": "stage_sample"
+			"defaultValue": "ADF_REF"
 		},
 		"SqlServer7Stage_properties_typeProperties_userName": {
 			"type": "string",
