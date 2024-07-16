@@ -55,35 +55,6 @@
 				]
 			},
 			{
-				"name": "Stored procedure1",
-				"type": "SqlServerStoredProcedure",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [
-					{
-						"activity": "ForEach1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[stage].[LoadDataWithCurrentDate]"
-				},
-				"linkedServiceName": {
-					"referenceName": "SqlServer7Stage",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
 				"name": "Csv-File-Lookup",
 				"type": "Lookup",
 				"dependsOn": [],
@@ -217,8 +188,45 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Until1",
+				"type": "Until",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "Execute Pipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "SP_INSERT_DELETE_UPDATE",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
+		"variables": {
+			"Insertion": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Refresher"
 		},
