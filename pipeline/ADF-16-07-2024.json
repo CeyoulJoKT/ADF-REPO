@@ -3,150 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Csv-File-Lookup",
-				"type": "Lookup",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "ExcelSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						}
-					},
-					"dataset": {
-						"referenceName": "Excel2",
-						"type": "DatasetReference"
-					},
-					"firstRowOnly": false
-				}
-			},
-			{
-				"name": "Inserting_to_SQL",
-				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [
-					{
-						"activity": "Csv-File-Lookup",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('Csv-File-Lookup').output.value",
-						"type": "Expression"
-					},
-					"isSequential": false,
-					"activities": [
-						{
-							"name": "Insert-Std-Data",
-							"type": "SqlServerStoredProcedure",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"storedProcedureName": "[dbo].[InsertStudentDataWithDate]",
-								"storedProcedureParameters": {
-									"Chemistry": {
-										"value": {
-											"value": "@item().chemistry",
-											"type": "Expression"
-										},
-										"type": "Int32"
-									},
-									"ComputerScience": {
-										"value": {
-											"value": "@item().Computersicence",
-											"type": "Expression"
-										},
-										"type": "Int32"
-									},
-									"Date": {
-										"value": {
-											"value": "@item().date",
-											"type": "Expression"
-										},
-										"type": "DateTime"
-									},
-									"Language": {
-										"value": {
-											"value": "@item().language",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"Maths": {
-										"value": {
-											"value": "@item().maths",
-											"type": "Expression"
-										},
-										"type": "Int32"
-									},
-									"Physics": {
-										"value": {
-											"value": "@item().Phiysics",
-											"type": "Expression"
-										},
-										"type": "Int32"
-									},
-									"StudentCode": {
-										"value": {
-											"value": "@item().studentcode",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"StudentId": {
-										"value": {
-											"value": "@item().StudentID",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"StudentName": {
-										"value": {
-											"value": "@item().StudentName",
-											"type": "Expression"
-										},
-										"type": "String"
-									}
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "SqlServer7Stage",
-								"type": "LinkedServiceReference"
-							}
-						}
-					]
-				}
-			},
-			{
 				"name": "Execute Pipeline1",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Copy data1",
+						"activity": "Blob-SQL",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -373,13 +234,13 @@
 					"method": "POST",
 					"url": "https://prod2-26.southindia.logic.azure.com:443/workflows/80d4c7fc721043ed9cfca06646269803/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=z_9e0y425jOC_NiwS8GZes5kBjacx8m3M8_YztH8tm8",
 					"body": {
-						"value": "{\n    \"Reciever\":\"Ceyoul.Joseph@datasemantics.co\",\n    \"subject\":\"Task Completed\",\n    \"body\":\"Data Copied to SQL with SP and Total and Aggregate of the column is created\"\n}",
+						"value": "{\n    \"Reciever\":\"sharmila.s@datasemantics.co\",\n    \"subject\":\"Task Completed\",\n    \"body\":\"Data Copied to SQL with SP and Total and Aggregate of the column is created\"\n}",
 						"type": "Expression"
 					}
 				}
 			},
 			{
-				"name": "Copy data1",
+				"name": "Blob-SQL",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -488,6 +349,9 @@
 								}
 							},
 							{
+								"source": {
+									"name": "Phiysics"
+								},
 								"sink": {
 									"name": "physics",
 									"type": "Int32",
@@ -507,17 +371,13 @@
 								}
 							},
 							{
+								"source": {
+									"name": "Computersicence"
+								},
 								"sink": {
 									"name": "Computerscience",
 									"type": "Int32",
 									"physicalType": "int"
-								}
-							},
-							{
-								"sink": {
-									"name": "stageCreateddate",
-									"type": "DateTime",
-									"physicalType": "datetime"
 								}
 							}
 						],
