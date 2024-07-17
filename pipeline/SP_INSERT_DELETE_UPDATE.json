@@ -52,6 +52,8 @@
 			{
 				"name": "30 Sec",
 				"type": "Wait",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Insertion",
@@ -68,6 +70,8 @@
 			{
 				"name": "20 sec",
 				"type": "Wait",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Deletion",
@@ -111,6 +115,8 @@
 			{
 				"name": "10 sec",
 				"type": "Wait",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Update",

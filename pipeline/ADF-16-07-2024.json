@@ -28,6 +28,8 @@
 			{
 				"name": "StudentsID_Fetch",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "ADD_COLUMNS",
@@ -60,6 +62,8 @@
 			{
 				"name": "Assiging_Marks",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "StudentsID_Fetch",
@@ -165,6 +169,8 @@
 			{
 				"name": "ADD_COLUMNS",
 				"type": "Script",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Execute Pipeline1",
@@ -198,6 +204,8 @@
 			{
 				"name": "Execute Pipeline2",
 				"type": "ExecutePipeline",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"secureInput": false
@@ -214,6 +222,8 @@
 			{
 				"name": "SUCCESS_MAIL",
 				"type": "WebActivity",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Assiging_Marks",
@@ -242,6 +252,8 @@
 			{
 				"name": "Blob-SQL",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Execute Pipeline2",
