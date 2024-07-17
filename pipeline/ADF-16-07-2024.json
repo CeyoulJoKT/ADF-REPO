@@ -5,6 +5,8 @@
 			{
 				"name": "Csv-File-Lookup",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -33,6 +35,8 @@
 			{
 				"name": "Inserting_to_SQL",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Csv-File-Lookup",
@@ -140,6 +144,8 @@
 			{
 				"name": "Execute Pipeline1",
 				"type": "ExecutePipeline",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Inserting_to_SQL",
@@ -165,7 +171,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "ALTER TABLE",
+						"activity": "ADD_COLUMNS",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -238,12 +244,39 @@
 								"referenceName": "SqlServer7Stage",
 								"type": "LinkedServiceReference"
 							}
+						},
+						{
+							"name": "AVERAGE_MARKS",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Total_Marks",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[UpdateAverageMarks]"
+							},
+							"linkedServiceName": {
+								"referenceName": "SqlServer7Stage",
+								"type": "LinkedServiceReference"
+							}
 						}
 					]
 				}
 			},
 			{
-				"name": "ALTER TABLE",
+				"name": "ADD_COLUMNS",
 				"type": "Script",
 				"dependsOn": [
 					{
@@ -269,33 +302,9 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "ALTER TABLE [dim].[students_data]\nADD TotalMarks INT;\n"
+							"text": "ALTER TABLE [dim].[students_data]\nADD \n    AverageMarks DECIMAL(5, 2),\n    TotalMarks INT;\n\n"
 						}
 					],
-					"scriptBlockExecutionTimeout": "02:00:00"
-				}
-			},
-			{
-				"name": "Script1",
-				"type": "Script",
-				"dependsOn": [
-					{
-						"activity": "Execute Pipeline1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"scripts": [],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
