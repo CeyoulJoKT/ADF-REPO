@@ -517,6 +517,33 @@
 										"referenceName": "SqlServer7Stage",
 										"type": "LinkedServiceReference"
 									}
+								},
+								{
+									"name": "Grade",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "AVERAGE_MARKS",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[UpdateStudentGrades]"
+									},
+									"linkedServiceName": {
+										"referenceName": "SqlServer7Stage",
+										"type": "LinkedServiceReference"
+									}
 								}
 							]
 						}
@@ -555,52 +582,11 @@
 						}
 					},
 					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "CoolTime",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Csv-File-Lookup').output.value",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Grade",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[dbo].[UpdateStudentGrades]"
-									},
-									"linkedServiceName": {
-										"referenceName": "SqlServer7Stage",
-										"type": "LinkedServiceReference"
-									}
-								}
-							]
-						}
-					},
-					{
 						"name": "ENDD",
 						"type": "Wait",
 						"dependsOn": [
 							{
-								"activity": "ForEach1",
+								"activity": "Assiging_Marks",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -626,22 +612,6 @@
 							},
 							"waitOnCompletion": true,
 							"parameters": {}
-						}
-					},
-					{
-						"name": "CoolTime",
-						"type": "Wait",
-						"dependsOn": [
-							{
-								"activity": "Assiging_Marks",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"waitTimeInSeconds": 3
 						}
 					}
 				],
