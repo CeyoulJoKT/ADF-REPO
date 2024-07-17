@@ -5,14 +5,9 @@
 			{
 				"name": "Csv-File-Lookup",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "Execute Pipeline2",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -40,6 +35,8 @@
 			{
 				"name": "Inserting_to_SQL",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Csv-File-Lookup",
@@ -149,7 +146,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Inserting_to_SQL",
+						"activity": "Copy data1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -380,6 +377,169 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Execute Pipeline2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ExcelSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "StudentId",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "StudentId",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Studentcode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "StudentCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Studentname",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "StudentName",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "date",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "Language",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "language",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Maths",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Maths",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"sink": {
+									"name": "physics",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Chemistry",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "chemistry",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"sink": {
+									"name": "Computerscience",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"sink": {
+									"name": "stageCreateddate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Excel2",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SqlServerTable14",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"variables": {
