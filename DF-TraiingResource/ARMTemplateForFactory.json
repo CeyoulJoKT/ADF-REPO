@@ -408,7 +408,7 @@
 						"type": "Lookup",
 						"dependsOn": [
 							{
-								"activity": "ALTER TABLE",
+								"activity": "ADD_COLUMNS",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -453,6 +453,8 @@
 								"value": "@activity('StudentsID_Fetch').output.value",
 								"type": "Expression"
 							},
+							"isSequential": false,
+							"batchCount": 3,
 							"activities": [
 								{
 									"name": "Total_Marks",
@@ -482,12 +484,39 @@
 										"referenceName": "SqlServer7Stage",
 										"type": "LinkedServiceReference"
 									}
+								},
+								{
+									"name": "AVERAGE_MARKS",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "Total_Marks",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[UpdateAverageMarks]"
+									},
+									"linkedServiceName": {
+										"referenceName": "SqlServer7Stage",
+										"type": "LinkedServiceReference"
+									}
 								}
 							]
 						}
 					},
 					{
-						"name": "ALTER TABLE",
+						"name": "ADD_COLUMNS",
 						"type": "Script",
 						"dependsOn": [
 							{
@@ -513,10 +542,52 @@
 							"scripts": [
 								{
 									"type": "Query",
-									"text": "ALTER TABLE [dim].[students_data]\nADD TotalMarks INT;\n"
+									"text": "ALTER TABLE [dim].[students_data]\nADD \n    TotalMarks INT,\n    AverageMarks DECIMAL(5, 2),\n    Grade Varchar(5);\n\n"
 								}
 							],
 							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Assiging_Marks",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('AVERAGE_MARKS').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 3,
+							"activities": [
+								{
+									"name": "Grade",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[UpdateStudentGrades]"
+									},
+									"linkedServiceName": {
+										"referenceName": "SqlServer7Stage",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
 						}
 					}
 				],
@@ -1832,7 +1903,7 @@
 						],
 						"userProperties": [],
 						"typeProperties": {
-							"waitTimeInSeconds": 20
+							"waitTimeInSeconds": 30
 						}
 					},
 					{
