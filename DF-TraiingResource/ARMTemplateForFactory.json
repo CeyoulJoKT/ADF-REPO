@@ -582,22 +582,6 @@
 						}
 					},
 					{
-						"name": "ENDD",
-						"type": "Wait",
-						"dependsOn": [
-							{
-								"activity": "Assiging_Marks",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"waitTimeInSeconds": 1
-						}
-					},
-					{
 						"name": "Execute Pipeline2",
 						"type": "ExecutePipeline",
 						"dependsOn": [],
@@ -612,6 +596,35 @@
 							},
 							"waitOnCompletion": true,
 							"parameters": {}
+						}
+					},
+					{
+						"name": "SUCCESS_MAIL",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Assiging_Marks",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "POST",
+							"headers": {},
+							"url": "https://prod2-26.southindia.logic.azure.com:443/workflows/80d4c7fc721043ed9cfca06646269803/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=z_9e0y425jOC_NiwS8GZes5kBjacx8m3M8_YztH8tm8",
+							"body": {
+								"value": "{\n    \"Reciever\":\"Ceyoul.Joseph@datasemantics.co\",\n    \"subject\":\"Task Completed\",\n    \"body\":\"Data Copied to SQL with SP and Total and Aggregate of the column is created\"\n}",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -832,6 +845,150 @@
 				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]",
 				"[concat(variables('factoryId'), '/datasets/SqlServerTable7')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable11')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Cleaning')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Drop Grade",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Truncate",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SqlServer7Stage",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "ALTER TABLE [dim].[students_data]\nDROP COLUMN Grade;"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Truncate",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SqlServer7Stage",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": " truncate table [dim].[Students_Data]\n truncate table [stage].[Students_Data]"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Drop Average marks",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Drop Grade",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SqlServer7Stage",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "ALTER TABLE [dim].[students_data]\nDROP COLUMN AverageMarks;\n"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Drop TotalMarks",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Drop Average marks",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SqlServer7Stage",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "ALTER TABLE [dim].[students_data]\nDROP COLUMN Totalmarks;"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Refresher"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer7Stage')]"
 			]
 		},
 		{
@@ -3299,7 +3456,7 @@
 							"headers": {},
 							"url": "https://prod2-26.southindia.logic.azure.com:443/workflows/80d4c7fc721043ed9cfca06646269803/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=z_9e0y425jOC_NiwS8GZes5kBjacx8m3M8_YztH8tm8",
 							"body": {
-								"value": "{\n    \"Reciever\":\"sharmila.s@datasemantics.co\",\n    \"subject\":\"Task Completed\",\n    \"body\":\"Task has been completed using web activity\"\n}",
+								"value": "{\n    \"Reciever\":\"Ceyoul.Joseph@datasemantics.co\",\n    \"subject\":\"Task Completed\",\n    \"body\":\"Data Copied to SQL with SP and Total and Aggregate of the column is created\"\n}",
 								"type": "Expression"
 							}
 						}
@@ -6940,150 +7097,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DelimitedText14')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Cleaning')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Drop Grade",
-						"type": "Script",
-						"dependsOn": [
-							{
-								"activity": "Truncate",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"linkedServiceName": {
-							"referenceName": "SqlServer7Stage",
-							"type": "LinkedServiceReference"
-						},
-						"typeProperties": {
-							"scripts": [
-								{
-									"type": "Query",
-									"text": "ALTER TABLE [dim].[students_data]\nDROP COLUMN Grade;"
-								}
-							],
-							"scriptBlockExecutionTimeout": "02:00:00"
-						}
-					},
-					{
-						"name": "Truncate",
-						"type": "Script",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"linkedServiceName": {
-							"referenceName": "SqlServer7Stage",
-							"type": "LinkedServiceReference"
-						},
-						"typeProperties": {
-							"scripts": [
-								{
-									"type": "Query",
-									"text": " truncate table [dim].[Students_Data]\n truncate table [stage].[Students_Data]"
-								}
-							],
-							"scriptBlockExecutionTimeout": "02:00:00"
-						}
-					},
-					{
-						"name": "Drop Average marks",
-						"type": "Script",
-						"dependsOn": [
-							{
-								"activity": "Drop Grade",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"linkedServiceName": {
-							"referenceName": "SqlServer7Stage",
-							"type": "LinkedServiceReference"
-						},
-						"typeProperties": {
-							"scripts": [
-								{
-									"type": "Query",
-									"text": "ALTER TABLE [dim].[students_data]\nDROP COLUMN AverageMarks;\n"
-								}
-							],
-							"scriptBlockExecutionTimeout": "02:00:00"
-						}
-					},
-					{
-						"name": "Drop TotalMarks",
-						"type": "Script",
-						"dependsOn": [
-							{
-								"activity": "Drop Average marks",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"linkedServiceName": {
-							"referenceName": "SqlServer7Stage",
-							"type": "LinkedServiceReference"
-						},
-						"typeProperties": {
-							"scripts": [
-								{
-									"type": "Query",
-									"text": "ALTER TABLE [dim].[students_data]\nDROP COLUMN Totalmarks;"
-								}
-							],
-							"scriptBlockExecutionTimeout": "02:00:00"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "Refresher"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer7Stage')]"
 			]
 		}
 	]
