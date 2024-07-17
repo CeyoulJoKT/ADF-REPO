@@ -338,22 +338,6 @@
 				}
 			},
 			{
-				"name": "ENDD",
-				"type": "Wait",
-				"dependsOn": [
-					{
-						"activity": "Assiging_Marks",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"waitTimeInSeconds": 1
-				}
-			},
-			{
 				"name": "Execute Pipeline2",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
@@ -367,6 +351,34 @@
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "SUCCESS_MAIL",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Assiging_Marks",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://prod2-26.southindia.logic.azure.com:443/workflows/80d4c7fc721043ed9cfca06646269803/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=z_9e0y425jOC_NiwS8GZes5kBjacx8m3M8_YztH8tm8",
+					"body": {
+						"value": "{\n    \"Reciever\":\"Ceyoul.Joseph@datasemantics.co\",\n    \"subject\":\"Task Completed\",\n    \"body\":\"Data Copied to SQL with SP and Total and Aggregate of the column is created\"\n}",
+						"type": "Expression"
+					}
 				}
 			}
 		],
