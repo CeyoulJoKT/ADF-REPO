@@ -266,33 +266,6 @@
 								"referenceName": "SqlServer7Stage",
 								"type": "LinkedServiceReference"
 							}
-						},
-						{
-							"name": "Grade",
-							"type": "SqlServerStoredProcedure",
-							"dependsOn": [
-								{
-									"activity": "AVERAGE_MARKS",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"storedProcedureName": "[dbo].[UpdateStudentGrades]"
-							},
-							"linkedServiceName": {
-								"referenceName": "SqlServer7Stage",
-								"type": "LinkedServiceReference"
-							}
 						}
 					]
 				}
@@ -328,6 +301,43 @@
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Assiging_Marks",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"activities": [
+						{
+							"name": "Grade",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[UpdateStudentGrades]"
+							},
+							"linkedServiceName": {
+								"referenceName": "SqlServer7Stage",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
 				}
 			}
 		],
