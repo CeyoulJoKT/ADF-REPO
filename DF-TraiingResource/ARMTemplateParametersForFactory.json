@@ -62,6 +62,9 @@
 		"SqlServer6_password": {
 			"value": ""
 		},
+		"SqlServer7DIMST_password": {
+			"value": ""
+		},
 		"SqlServer7Stage_password": {
 			"value": ""
 		},
@@ -162,6 +165,15 @@
 			"value": "cars"
 		},
 		"SqlServer6_properties_typeProperties_userName": {
+			"value": "NIGHTFURY\\Ceyoul"
+		},
+		"SqlServer7DIMST_properties_typeProperties_server": {
+			"value": "NIGHTFURY\\SQLEXPRESS02"
+		},
+		"SqlServer7DIMST_properties_typeProperties_database": {
+			"value": "ADF_REF"
+		},
+		"SqlServer7DIMST_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\Ceyoul"
 		},
 		"SqlServer7Stage_properties_typeProperties_server": {

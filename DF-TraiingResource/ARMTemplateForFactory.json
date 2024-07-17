@@ -84,6 +84,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer6'"
 		},
+		"SqlServer7DIMST_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SqlServer7DIMST'"
+		},
 		"SqlServer7Stage_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer7Stage'"
@@ -220,6 +224,18 @@
 			"type": "string",
 			"defaultValue": "NIGHTFURY\\Ceyoul"
 		},
+		"SqlServer7DIMST_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "NIGHTFURY\\SQLEXPRESS02"
+		},
+		"SqlServer7DIMST_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "ADF_REF"
+		},
+		"SqlServer7DIMST_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "NIGHTFURY\\Ceyoul"
+		},
 		"SqlServer7Stage_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "NIGHTFURY\\SQLEXPRESS02"
@@ -244,154 +260,11 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Csv-File-Lookup",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Execute Pipeline2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "ExcelSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								}
-							},
-							"dataset": {
-								"referenceName": "Excel2",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Inserting_to_SQL",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Csv-File-Lookup",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Csv-File-Lookup').output.value",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"activities": [
-								{
-									"name": "Insert-Std-Data",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[dbo].[InsertStudentDataWithDate]",
-										"storedProcedureParameters": {
-											"Chemistry": {
-												"value": {
-													"value": "@item().chemistry",
-													"type": "Expression"
-												},
-												"type": "Int32"
-											},
-											"ComputerScience": {
-												"value": {
-													"value": "@item().Computersicence",
-													"type": "Expression"
-												},
-												"type": "Int32"
-											},
-											"Date": {
-												"value": {
-													"value": "@item().date",
-													"type": "Expression"
-												},
-												"type": "DateTime"
-											},
-											"Language": {
-												"value": {
-													"value": "@item().language",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"Maths": {
-												"value": {
-													"value": "@item().maths",
-													"type": "Expression"
-												},
-												"type": "Int32"
-											},
-											"Physics": {
-												"value": {
-													"value": "@item().Phiysics",
-													"type": "Expression"
-												},
-												"type": "Int32"
-											},
-											"StudentCode": {
-												"value": {
-													"value": "@item().studentcode",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"StudentId": {
-												"value": {
-													"value": "@item().StudentID",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"StudentName": {
-												"value": {
-													"value": "@item().StudentName",
-													"type": "Expression"
-												},
-												"type": "String"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "SqlServer7Stage",
-										"type": "LinkedServiceReference"
-									}
-								}
-							]
-						}
-					},
-					{
 						"name": "Execute Pipeline1",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Inserting_to_SQL",
+								"activity": "Blob-SQL",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -413,6 +286,8 @@
 					{
 						"name": "StudentsID_Fetch",
 						"type": "Lookup",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "ADD_COLUMNS",
@@ -446,6 +321,8 @@
 					{
 						"name": "Assiging_Marks",
 						"type": "ForEach",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "StudentsID_Fetch",
@@ -551,6 +428,8 @@
 					{
 						"name": "ADD_COLUMNS",
 						"type": "Script",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Execute Pipeline1",
@@ -584,6 +463,8 @@
 					{
 						"name": "Execute Pipeline2",
 						"type": "ExecutePipeline",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"secureInput": false
@@ -601,6 +482,8 @@
 					{
 						"name": "SUCCESS_MAIL",
 						"type": "WebActivity",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Assiging_Marks",
@@ -622,10 +505,176 @@
 							"headers": {},
 							"url": "https://prod2-26.southindia.logic.azure.com:443/workflows/80d4c7fc721043ed9cfca06646269803/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=z_9e0y425jOC_NiwS8GZes5kBjacx8m3M8_YztH8tm8",
 							"body": {
-								"value": "{\n    \"Reciever\":\"Ceyoul.Joseph@datasemantics.co\",\n    \"subject\":\"Task Completed\",\n    \"body\":\"Data Copied to SQL with SP and Total and Aggregate of the column is created\"\n}",
+								"value": "{\n    \"Reciever\":\"sharmila.s@datasemantics.co\",\n    \"subject\":\"Task Completed\",\n    \"body\":\"Data Copied to SQL with SP and Total and Aggregate of the column is created\"\n}",
 								"type": "Expression"
 							}
 						}
+					},
+					{
+						"name": "Blob-SQL",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [
+							{
+								"activity": "Execute Pipeline2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "StudentId",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "StudentId",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Studentcode",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "StudentCode",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Studentname",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "StudentName",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "date",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "date",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "Language",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "language",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Maths",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Maths",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "Phiysics"
+										},
+										"sink": {
+											"name": "physics",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "Chemistry",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "chemistry",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "Computersicence"
+										},
+										"sink": {
+											"name": "Computerscience",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Excel2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SqlServerTable14",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -642,11 +691,12 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Excel2')]",
 				"[concat(variables('factoryId'), '/pipelines/SP_INSERT_DELETE_UPDATE')]",
 				"[concat(variables('factoryId'), '/datasets/SqlServerTable13')]",
 				"[concat(variables('factoryId'), '/linkedServices/SqlServer7Stage')]",
-				"[concat(variables('factoryId'), '/pipelines/Cleaning')]"
+				"[concat(variables('factoryId'), '/pipelines/Cleaning')]",
+				"[concat(variables('factoryId'), '/datasets/Excel2')]",
+				"[concat(variables('factoryId'), '/datasets/SqlServerTable14')]"
 			]
 		},
 		{
@@ -2075,6 +2125,8 @@
 					{
 						"name": "30 Sec",
 						"type": "Wait",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Insertion",
@@ -2091,6 +2143,8 @@
 					{
 						"name": "20 sec",
 						"type": "Wait",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Deletion",
@@ -2134,6 +2188,8 @@
 					{
 						"name": "10 sec",
 						"type": "Wait",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Update",
@@ -5624,6 +5680,74 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable14')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer7DIMST",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "StudentId",
+						"type": "varchar"
+					},
+					{
+						"name": "StudentCode",
+						"type": "varchar"
+					},
+					{
+						"name": "StudentName",
+						"type": "varchar"
+					},
+					{
+						"name": "date",
+						"type": "date"
+					},
+					{
+						"name": "language",
+						"type": "varchar"
+					},
+					{
+						"name": "Maths",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "physics",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "chemistry",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Computerscience",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "stageCreateddate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "Students_Data"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer7DIMST')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SqlServerTable2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -6394,6 +6518,34 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('SqlServer6_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime1",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServer7DIMST')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('SqlServer7DIMST_properties_typeProperties_server')]",
+					"database": "[parameters('SqlServer7DIMST_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": false,
+					"authenticationType": "Windows",
+					"userName": "[parameters('SqlServer7DIMST_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SqlServer7DIMST_password')]"
 					}
 				},
 				"connectVia": {

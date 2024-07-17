@@ -44,6 +44,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer6'"
 		},
+		"SqlServer7DIMST_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SqlServer7DIMST'"
+		},
 		"SqlServer7Stage_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer7Stage'"
@@ -133,6 +137,18 @@
 			"defaultValue": "cars"
 		},
 		"SqlServer6_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "NIGHTFURY\\Ceyoul"
+		},
+		"SqlServer7DIMST_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "NIGHTFURY\\SQLEXPRESS02"
+		},
+		"SqlServer7DIMST_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "ADF_REF"
+		},
+		"SqlServer7DIMST_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "NIGHTFURY\\Ceyoul"
 		},
@@ -374,6 +390,32 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SqlServer7DIMST')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('SqlServer7DIMST_properties_typeProperties_server')]",
+					"database": "[parameters('SqlServer7DIMST_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": false,
+					"authenticationType": "Windows",
+					"userName": "[parameters('SqlServer7DIMST_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SqlServer7DIMST_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime1",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SqlServer7Stage')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -599,6 +641,8 @@
 					{
 						"name": "30 Sec",
 						"type": "Wait",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Insertion",
@@ -615,6 +659,8 @@
 					{
 						"name": "20 sec",
 						"type": "Wait",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Deletion",
@@ -658,6 +704,8 @@
 					{
 						"name": "10 sec",
 						"type": "Wait",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Update",
@@ -1206,42 +1254,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SqlServer7Stage')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServerTable2')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlServer1",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "Customerid",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "CustomerName",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "salesadf1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer1')]"
 			]
 		}
 	]

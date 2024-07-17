@@ -84,6 +84,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer6'"
 		},
+		"SqlServer7DIMST_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SqlServer7DIMST'"
+		},
 		"SqlServer7Stage_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer7Stage'"
@@ -217,6 +221,18 @@
 			"defaultValue": "cars"
 		},
 		"SqlServer6_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "NIGHTFURY\\Ceyoul"
+		},
+		"SqlServer7DIMST_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "NIGHTFURY\\SQLEXPRESS02"
+		},
+		"SqlServer7DIMST_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "ADF_REF"
+		},
+		"SqlServer7DIMST_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "NIGHTFURY\\Ceyoul"
 		},
@@ -407,6 +423,9 @@
 					"SqlServer6_password": {
 						"value": "[parameters('SqlServer6_password')]"
 					},
+					"SqlServer7DIMST_password": {
+						"value": "[parameters('SqlServer7DIMST_password')]"
+					},
 					"SqlServer7Stage_password": {
 						"value": "[parameters('SqlServer7Stage_password')]"
 					},
@@ -475,6 +494,15 @@
 					},
 					"SqlServer6_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer6_properties_typeProperties_userName')]"
+					},
+					"SqlServer7DIMST_properties_typeProperties_server": {
+						"value": "[parameters('SqlServer7DIMST_properties_typeProperties_server')]"
+					},
+					"SqlServer7DIMST_properties_typeProperties_database": {
+						"value": "[parameters('SqlServer7DIMST_properties_typeProperties_database')]"
+					},
+					"SqlServer7DIMST_properties_typeProperties_userName": {
+						"value": "[parameters('SqlServer7DIMST_properties_typeProperties_userName')]"
 					},
 					"SqlServer7Stage_properties_typeProperties_server": {
 						"value": "[parameters('SqlServer7Stage_properties_typeProperties_server')]"
