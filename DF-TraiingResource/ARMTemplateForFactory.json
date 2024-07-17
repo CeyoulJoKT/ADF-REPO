@@ -246,7 +246,14 @@
 					{
 						"name": "Csv-File-Lookup",
 						"type": "Lookup",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Execute Pipeline2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -454,7 +461,6 @@
 								"type": "Expression"
 							},
 							"isSequential": false,
-							"batchCount": 3,
 							"activities": [
 								{
 									"name": "Total_Marks",
@@ -553,7 +559,7 @@
 						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "Assiging_Marks",
+								"activity": "CoolTime",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -562,10 +568,9 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('AVERAGE_MARKS').output.value",
+								"value": "@activity('Csv-File-Lookup').output.value",
 								"type": "Expression"
 							},
-							"batchCount": 3,
 							"activities": [
 								{
 									"name": "Grade",
@@ -589,6 +594,55 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "ENDD",
+						"type": "Wait",
+						"dependsOn": [
+							{
+								"activity": "ForEach1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 1
+						}
+					},
+					{
+						"name": "Execute Pipeline2",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Cleaning",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "CoolTime",
+						"type": "Wait",
+						"dependsOn": [
+							{
+								"activity": "Assiging_Marks",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 3
+						}
 					}
 				],
 				"policy": {
@@ -608,7 +662,8 @@
 				"[concat(variables('factoryId'), '/datasets/Excel2')]",
 				"[concat(variables('factoryId'), '/pipelines/SP_INSERT_DELETE_UPDATE')]",
 				"[concat(variables('factoryId'), '/datasets/SqlServerTable13')]",
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer7Stage')]"
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer7Stage')]",
+				"[concat(variables('factoryId'), '/pipelines/Cleaning')]"
 			]
 		},
 		{
@@ -6915,6 +6970,150 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DelimitedText14')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Cleaning')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Drop Grade",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Truncate",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SqlServer7Stage",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "ALTER TABLE [dim].[students_data]\nDROP COLUMN Grade;"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Truncate",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SqlServer7Stage",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": " truncate table [dim].[Students_Data]\n truncate table [stage].[Students_Data]"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Drop Average marks",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Drop Grade",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SqlServer7Stage",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "ALTER TABLE [dim].[students_data]\nDROP COLUMN AverageMarks;\n"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Drop TotalMarks",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Drop Average marks",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SqlServer7Stage",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "ALTER TABLE [dim].[students_data]\nDROP COLUMN Totalmarks;"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Refresher"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer7Stage')]"
 			]
 		}
 	]
