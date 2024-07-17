@@ -315,7 +315,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "CoolTime",
+						"activity": "Assiging_Marks",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -327,6 +327,7 @@
 						"value": "@activity('Csv-File-Lookup').output.value",
 						"type": "Expression"
 					},
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "Grade",
@@ -381,22 +382,6 @@
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "CoolTime",
-				"type": "Wait",
-				"dependsOn": [
-					{
-						"activity": "Assiging_Marks",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"waitTimeInSeconds": 3
 				}
 			}
 		],
