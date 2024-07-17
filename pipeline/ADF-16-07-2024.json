@@ -5,8 +5,6 @@
 			{
 				"name": "Csv-File-Lookup",
 				"type": "Lookup",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -35,8 +33,6 @@
 			{
 				"name": "Inserting_to_SQL",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Csv-File-Lookup",
@@ -144,8 +140,6 @@
 			{
 				"name": "Execute Pipeline1",
 				"type": "ExecutePipeline",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Inserting_to_SQL",
@@ -215,6 +209,7 @@
 						"value": "@activity('StudentsID_Fetch').output.value",
 						"type": "Expression"
 					},
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "Total_Marks",
@@ -329,7 +324,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "ALTER TABLE [dim].[students_data]\nADD \n    TotalMarks INT,\n    AverageMarks DECIMAL(5, 2),\n    Grade Varchchar(5);\n\n"
+							"text": "ALTER TABLE [dim].[students_data]\nADD \n    TotalMarks INT,\n    AverageMarks DECIMAL(5, 2),\n    Grade Varchar(5);\n\n"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
