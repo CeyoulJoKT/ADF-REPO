@@ -5,7 +5,14 @@
 			{
 				"name": "Csv-File-Lookup",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Execute Pipeline2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -210,7 +217,6 @@
 						"type": "Expression"
 					},
 					"isSequential": false,
-					"batchCount": 3,
 					"activities": [
 						{
 							"name": "Total_Marks",
@@ -309,7 +315,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Assiging_Marks",
+						"activity": "CoolTime",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -318,10 +324,9 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('AVERAGE_MARKS').output.value",
+						"value": "@activity('Csv-File-Lookup').output.value",
 						"type": "Expression"
 					},
-					"batchCount": 3,
 					"activities": [
 						{
 							"name": "Grade",
@@ -344,6 +349,54 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "ENDD",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			},
+			{
+				"name": "Execute Pipeline2",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Cleaning",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "CoolTime",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Assiging_Marks",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 3
 				}
 			}
 		],
