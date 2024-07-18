@@ -27,7 +27,7 @@
 				}
 			},
 			{
-				"name": "Stored procedure1",
+				"name": "Insert_update_delete-Sp",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
