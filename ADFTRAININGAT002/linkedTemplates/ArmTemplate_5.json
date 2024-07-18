@@ -633,7 +633,7 @@
 						}
 					},
 					{
-						"name": "Insert_upat",
+						"name": "Insert_update_delete-Sp",
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
