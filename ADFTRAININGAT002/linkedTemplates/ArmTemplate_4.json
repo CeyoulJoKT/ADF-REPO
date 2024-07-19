@@ -13,6 +13,363 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Set Variable')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "id1",
+							"value": "SELECT \n    -- Query 1: Basic Employee Details\n    e.employee_id AS employee_id,\n    e.name AS employee_name,\n    ISNULL(m.name, 'No Manager') AS manager_name,"
+						}
+					},
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Set variable6",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat(variables('id1'),variables('id3'),variables('id4'),variables('id5'),variables('id6'))",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable9",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Set variable3",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set variable1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "id3",
+							"value": {
+								"value": "(SELECT COUNT(*) FROM Employee) AS total_employees,\n\n",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable4",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set variable3",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "id4",
+							"value": {
+								"value": "d.department,\n    COUNT(*) AS department_employee_count,",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable5",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set variable4",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "id5",
+							"value": {
+								"value": "SUM(e.salary) AS department_total_salary,\n    AVG(e.salary) AS department_average_salary,",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable6",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set variable5",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "id6",
+							"value": {
+								"value": "(SELECT COUNT(*) FROM Employee r WHERE r.manager_id = e.employee_id) AS direct_reports_count\n\nFROM \n    Employee e\nLEFT JOIN \n    Employee m ON e.manager_id = m.employee_id\nLEFT JOIN \n    (\n        SELECT \n            department,\n            COUNT(*) AS department_employee_count\n        FROM \n            Employee\n        GROUP BY \n            department\n    ) d ON e.department = d.department\n\nGROUP BY \n    e.employee_id, e.name, m.name, d.department, e.salary\n\nORDER BY \n    e.employee_id;",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"id": {
+						"type": "String"
+					},
+					"dealers": {
+						"type": "String"
+					},
+					"id2": {
+						"type": "String"
+					},
+					"id3": {
+						"type": "String"
+					},
+					"id1": {
+						"type": "String"
+					},
+					"id4": {
+						"type": "String"
+					},
+					"id5": {
+						"type": "String"
+					},
+					"id6": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Refresher"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Web-Get-all')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Filter1",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Web1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Web1').output.data",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@lessOrEquals(item().id,10)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Filter1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Filter1').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Stored procedure2",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[pr_webid]",
+										"storedProcedureParameters": {
+											"avatar": {
+												"value": {
+													"value": "@item.avatar",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"email": {
+												"value": {
+													"value": "@item.email",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"first_name": {
+												"value": {
+													"value": "@item.first_name",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"id": {
+												"value": {
+													"value": "@item.id",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"last_name": {
+												"value": {
+													"value": "@item.last_name",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "SqlServer1",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Web1",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "GET",
+							"headers": {},
+							"url": "https://reqres.in/api/users?page=2"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "WebActivity"
+				},
+				"annotations": [],
+				"lastPublishTime": "2024-05-28T07:31:38Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "CustomerID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "CustomerName",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Customer1"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SqlServerTable10')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -735,369 +1092,6 @@
 						"          AddressType,",
 						"          Continent",
 						"     )) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DataHash')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Dataflow-transformation"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText8",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText9",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "derivedColumn1"
-						},
-						{
-							"name": "select1"
-						},
-						{
-							"name": "surrogateKey1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          ProductID as string,",
-						"          Date as string,",
-						"          Zip as string,",
-						"          Units as string,",
-						"          Revenue as string,",
-						"          Country as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> source1",
-						"select1 derive(ProductID = md5(ProductID)) ~> derivedColumn1",
-						"surrogateKey1 select(mapColumn(",
-						"          ProductID,",
-						"          Date,",
-						"          Units,",
-						"          Revenue,",
-						"          UQ_Key = {1000}",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"source1 keyGenerate(output({1000} as long),",
-						"     startAt: 100L,",
-						"     stepValue: 2L) ~> surrogateKey1",
-						"derivedColumn1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['Hasheddata'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Datamasking')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Dataflow-transformation"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "AzureSqlTable1",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						},
-						{
-							"dataset": {
-								"referenceName": "AzureSqlTable5",
-								"type": "DatasetReference"
-							},
-							"name": "source2"
-						},
-						{
-							"dataset": {
-								"referenceName": "AzureSqlTable6",
-								"type": "DatasetReference"
-							},
-							"name": "source3"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "AzureSqlTable7",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						},
-						{
-							"dataset": {
-								"referenceName": "AzureSqlTable8",
-								"type": "DatasetReference"
-							},
-							"name": "sink2"
-						}
-					],
-					"transformations": [
-						{
-							"name": "join1"
-						},
-						{
-							"name": "join2"
-						},
-						{
-							"name": "Maskemail"
-						},
-						{
-							"name": "select1"
-						},
-						{
-							"name": "sort1"
-						},
-						{
-							"name": "split1"
-						},
-						{
-							"name": "select2"
-						},
-						{
-							"name": "sort2"
-						},
-						{
-							"name": "sort3"
-						},
-						{
-							"name": "sort4"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          CustomerID as integer,",
-						"          NameStyle as boolean,",
-						"          Title as string,",
-						"          FirstName as string,",
-						"          MiddleName as string,",
-						"          LastName as string,",
-						"          Suffix as string,",
-						"          CompanyName as string,",
-						"          SalesPerson as string,",
-						"          EmailAddress as string,",
-						"          Phone as string,",
-						"          PasswordHash as string,",
-						"          PasswordSalt as string,",
-						"          rowguid as string,",
-						"          ModifiedDate as timestamp",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> source1",
-						"source(output(",
-						"          CustomerID as integer,",
-						"          AddressID as integer,",
-						"          AddressType as string,",
-						"          rowguid as string,",
-						"          ModifiedDate as timestamp",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> source2",
-						"source(output(",
-						"          AddressID as integer,",
-						"          AddressLine1 as string,",
-						"          AddressLine2 as string,",
-						"          City as string,",
-						"          StateProvince as string,",
-						"          CountryRegion as string,",
-						"          PostalCode as string,",
-						"          rowguid as string,",
-						"          ModifiedDate as timestamp",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> source3",
-						"source1, join2 join(source1@CustomerID == source2@CustomerID,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> join1",
-						"source2, source3 join(source2@AddressID == source3@AddressID,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> join2",
-						"join1 derive(EmailAddress = substring(EmailAddress, 1, 3) + 'XXX@' + substring(EmailAddress, 5, length(EmailAddress) - 4)) ~> Maskemail",
-						"Maskemail select(mapColumn(",
-						"          CustomerID = source1@CustomerID,",
-						"          NameStyle,",
-						"          Title,",
-						"          FirstName,",
-						"          MiddleName,",
-						"          LastName,",
-						"          Suffix,",
-						"          CompanyName,",
-						"          SalesPerson,",
-						"          EmailAddress,",
-						"          Phone,",
-						"          {Masked-Email} = EmailAddress",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"select1 sort(asc(CustomerID, true)) ~> sort1",
-						"select2 split(equals(CountryRegion, 'Canada'),",
-						"     equals(CountryRegion, 'United States'),",
-						"     disjoint: false) ~> split1@(CANADA, UnitedStates, OtherRegion)",
-						"join1 select(mapColumn(",
-						"          CustomerID = source1@CustomerID,",
-						"          Title,",
-						"          FirstName,",
-						"          MiddleName,",
-						"          LastName,",
-						"          CompanyName,",
-						"          SalesPerson,",
-						"          AddressType,",
-						"          AddressID = source3@AddressID,",
-						"          AddressLine1,",
-						"          AddressLine2,",
-						"          City,",
-						"          StateProvince,",
-						"          CountryRegion,",
-						"          PostalCode",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select2",
-						"split1@CANADA sort(asc(CustomerID, true)) ~> sort2",
-						"split1@UnitedStates sort(asc(CustomerID, true)) ~> sort3",
-						"split1@OtherRegion sort(asc(CustomerID, true)) ~> sort4",
-						"sort1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
-						"sort2 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/JsonFlattern')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Refreshercourse"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "Json6",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "AzureSqlTable16",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "derivedColumn1"
-						},
-						{
-							"name": "flatten1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          accountCreated as date,",
-						"          accounts as (accountBalance as integer, accountId as long, created as date)[],",
-						"          country as string,",
-						"          email as string,",
-						"          fullName as string,",
-						"          id as short,",
-						"          phone as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false,",
-						"     documentForm: 'arrayOfDocuments') ~> source1",
-						"flatten1 derive(StageCreatedDate = currentUTC()) ~> derivedColumn1",
-						"source1 foldDown(unroll(accounts, accounts),",
-						"     mapColumn(",
-						"          id,",
-						"          country,",
-						"          email,",
-						"          fullName,",
-						"          phone,",
-						"          accountCreated,",
-						"          accountId = accounts.accountId,",
-						"          accountBalance = accounts.accountBalance,",
-						"          created = accounts.created",
-						"     ),",
-						"     skipDuplicateMapInputs: false,",
-						"     skipDuplicateMapOutputs: false) ~> flatten1",
-						"derivedColumn1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     recreate:true,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 					]
 				}
 			},

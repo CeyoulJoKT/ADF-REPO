@@ -191,6 +191,9 @@
 		"SqlServer7Stage_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\Ceyoul"
 		},
+		"RestService6_properties_typeProperties_url": {
+			"value": "https://jsonplaceholder.typicode.com/albums"
+		},
 		"containerUri": {
 			"value": ""
 		},

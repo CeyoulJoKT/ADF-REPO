@@ -256,6 +256,10 @@
 			"type": "string",
 			"defaultValue": "NIGHTFURY\\Ceyoul"
 		},
+		"RestService6_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://jsonplaceholder.typicode.com/albums"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -369,6 +373,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"RestService6_properties_typeProperties_url": {
+						"value": "[parameters('RestService6_properties_typeProperties_url')]"
 					}
 				}
 			},

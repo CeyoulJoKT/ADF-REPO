@@ -170,6 +170,161 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Json4')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage7",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "sample.json",
+						"container": "testing"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"dealership": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"location": {
+									"type": "string"
+								},
+								"inventory": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "string"
+											},
+											"make": {
+												"type": "string"
+											},
+											"model": {
+												"type": "string"
+											},
+											"year": {
+												"type": "integer"
+											},
+											"specs": {
+												"type": "object",
+												"properties": {
+													"engine": {
+														"type": "string"
+													},
+													"transmission": {
+														"type": "string"
+													},
+													"features": {
+														"type": "array",
+														"items": {
+															"type": "string"
+														}
+													}
+												}
+											},
+											"price": {
+												"type": "integer"
+											},
+											"maintenanceRecords": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"date": {
+															"type": "string"
+														},
+														"service": {
+															"type": "string"
+														},
+														"details": {
+															"type": "object",
+															"properties": {
+																"serviceCenter": {
+																	"type": "string"
+																},
+																"mileage": {
+																	"type": "integer"
+																},
+																"cost": {
+																	"type": "number"
+																}
+															}
+														}
+													}
+												}
+											},
+											"rentalInfo": {
+												"type": "object",
+												"properties": {
+													"availability": {
+														"type": "string"
+													},
+													"rentalRates": {
+														"type": "object",
+														"properties": {
+															"daily": {
+																"type": "integer"
+															},
+															"weekly": {
+																"type": "integer"
+															},
+															"monthly": {
+																"type": "integer"
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								},
+								"staff": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "string"
+											},
+											"name": {
+												"type": "string"
+											},
+											"role": {
+												"type": "string"
+											},
+											"contact": {
+												"type": "object",
+												"properties": {
+													"email": {
+														"type": "string"
+													},
+													"phone": {
+														"type": "string"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Json5')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -628,6 +783,41 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/RestResource3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RestService6",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable17')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase4",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "Stage",
+					"table": "albumtble"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Cleaning')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -916,367 +1106,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SqlServer7Stage')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Set Variable')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Set variable1",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "id1",
-							"value": "SELECT \n    -- Query 1: Basic Employee Details\n    e.employee_id AS employee_id,\n    e.name AS employee_name,\n    ISNULL(m.name, 'No Manager') AS manager_name,"
-						}
-					},
-					{
-						"name": "Lookup1",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Set variable6",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "@concat(variables('id1'),variables('id3'),variables('id4'),variables('id5'),variables('id6'))",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "AzureSqlTable9",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Set variable3",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Set variable1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "id3",
-							"value": {
-								"value": "(SELECT COUNT(*) FROM Employee) AS total_employees,\n\n",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set variable4",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Set variable3",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "id4",
-							"value": {
-								"value": "d.department,\n    COUNT(*) AS department_employee_count,",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set variable5",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Set variable4",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "id5",
-							"value": {
-								"value": "SUM(e.salary) AS department_total_salary,\n    AVG(e.salary) AS department_average_salary,",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set variable6",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Set variable5",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "id6",
-							"value": {
-								"value": "(SELECT COUNT(*) FROM Employee r WHERE r.manager_id = e.employee_id) AS direct_reports_count\n\nFROM \n    Employee e\nLEFT JOIN \n    Employee m ON e.manager_id = m.employee_id\nLEFT JOIN \n    (\n        SELECT \n            department,\n            COUNT(*) AS department_employee_count\n        FROM \n            Employee\n        GROUP BY \n            department\n    ) d ON e.department = d.department\n\nGROUP BY \n    e.employee_id, e.name, m.name, d.department, e.salary\n\nORDER BY \n    e.employee_id;",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"variables": {
-					"id": {
-						"type": "String"
-					},
-					"dealers": {
-						"type": "String"
-					},
-					"id2": {
-						"type": "String"
-					},
-					"id3": {
-						"type": "String"
-					},
-					"id1": {
-						"type": "String"
-					},
-					"id4": {
-						"type": "String"
-					},
-					"id5": {
-						"type": "String"
-					},
-					"id6": {
-						"type": "String"
-					}
-				},
-				"folder": {
-					"name": "Refresher"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Web-Get-all')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Filter1",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "Web1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Web1').output.data",
-								"type": "Expression"
-							},
-							"condition": {
-								"value": "@lessOrEquals(item().id,10)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Filter1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Filter1').output.value",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"activities": [
-								{
-									"name": "Stored procedure2",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[dbo].[pr_webid]",
-										"storedProcedureParameters": {
-											"avatar": {
-												"value": {
-													"value": "@item.avatar",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"email": {
-												"value": {
-													"value": "@item.email",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"first_name": {
-												"value": {
-													"value": "@item.first_name",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"id": {
-												"value": {
-													"value": "@item.id",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"last_name": {
-												"value": {
-													"value": "@item.last_name",
-													"type": "Expression"
-												},
-												"type": "String"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "SqlServer1",
-										"type": "LinkedServiceReference"
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "Web1",
-						"type": "WebActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"method": "GET",
-							"headers": {},
-							"url": "https://reqres.in/api/users?page=2"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "WebActivity"
-				},
-				"annotations": [],
-				"lastPublishTime": "2024-05-28T07:31:38Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServerTable1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlServer1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "CustomerID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "CustomerName",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Customer1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer1')]"
 			]
 		}
 	]

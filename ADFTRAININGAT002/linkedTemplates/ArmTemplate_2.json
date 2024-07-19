@@ -13,6 +13,61 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText10')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage4",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"container": "for-dataflow-only"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ProductID",
+						"type": "String"
+					},
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Units",
+						"type": "String"
+					},
+					{
+						"name": "Revenue",
+						"type": "String"
+					},
+					{
+						"name": "UQ_Key",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DelimitedText11')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -761,161 +816,6 @@
 						},
 						"version": {
 							"type": "number"
-						}
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Json4')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage7",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "sample.json",
-						"container": "testing"
-					}
-				},
-				"schema": {
-					"type": "object",
-					"properties": {
-						"dealership": {
-							"type": "object",
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"location": {
-									"type": "string"
-								},
-								"inventory": {
-									"type": "array",
-									"items": {
-										"type": "object",
-										"properties": {
-											"id": {
-												"type": "string"
-											},
-											"make": {
-												"type": "string"
-											},
-											"model": {
-												"type": "string"
-											},
-											"year": {
-												"type": "integer"
-											},
-											"specs": {
-												"type": "object",
-												"properties": {
-													"engine": {
-														"type": "string"
-													},
-													"transmission": {
-														"type": "string"
-													},
-													"features": {
-														"type": "array",
-														"items": {
-															"type": "string"
-														}
-													}
-												}
-											},
-											"price": {
-												"type": "integer"
-											},
-											"maintenanceRecords": {
-												"type": "array",
-												"items": {
-													"type": "object",
-													"properties": {
-														"date": {
-															"type": "string"
-														},
-														"service": {
-															"type": "string"
-														},
-														"details": {
-															"type": "object",
-															"properties": {
-																"serviceCenter": {
-																	"type": "string"
-																},
-																"mileage": {
-																	"type": "integer"
-																},
-																"cost": {
-																	"type": "number"
-																}
-															}
-														}
-													}
-												}
-											},
-											"rentalInfo": {
-												"type": "object",
-												"properties": {
-													"availability": {
-														"type": "string"
-													},
-													"rentalRates": {
-														"type": "object",
-														"properties": {
-															"daily": {
-																"type": "integer"
-															},
-															"weekly": {
-																"type": "integer"
-															},
-															"monthly": {
-																"type": "integer"
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								},
-								"staff": {
-									"type": "array",
-									"items": {
-										"type": "object",
-										"properties": {
-											"id": {
-												"type": "string"
-											},
-											"name": {
-												"type": "string"
-											},
-											"role": {
-												"type": "string"
-											},
-											"contact": {
-												"type": "object",
-												"properties": {
-													"email": {
-														"type": "string"
-													},
-													"phone": {
-														"type": "string"
-													}
-												}
-											}
-										}
-									}
-								}
-							}
 						}
 					}
 				}
