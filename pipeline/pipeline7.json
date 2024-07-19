@@ -41,6 +41,7 @@
 						"type": "AzureSqlSink",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
@@ -53,7 +54,7 @@
 								},
 								"sink": {
 									"name": "userId",
-									"type": "Int64"
+									"type": "String"
 								}
 							},
 							{
@@ -62,7 +63,7 @@
 								},
 								"sink": {
 									"name": "id",
-									"type": "Int64"
+									"type": "String"
 								}
 							},
 							{
@@ -80,7 +81,7 @@
 								},
 								"sink": {
 									"name": "StageCreatedDate",
-									"type": "Date"
+									"type": "DateTime"
 								}
 							}
 						]
