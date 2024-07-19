@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "https://real-time-amazon-data.p.rapidapi.com/deals-v2?country=US&min_product_star_rating=ALL&price_range=ALL&discount_range=ALL",
+			"url": "https://jsonplaceholder.typicode.com/albums",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
