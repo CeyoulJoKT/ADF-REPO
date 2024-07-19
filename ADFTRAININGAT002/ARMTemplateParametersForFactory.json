@@ -107,6 +107,9 @@
 		"RestService5_properties_typeProperties_url": {
 			"value": "https://newsapi.org/v2/everything?q=keyword"
 		},
+		"RestService6_properties_typeProperties_url": {
+			"value": "https://jsonplaceholder.typicode.com/albums"
+		},
 		"SqlServer1_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\ceyoul"
 		},
@@ -190,9 +193,6 @@
 		},
 		"SqlServer7Stage_properties_typeProperties_userName": {
 			"value": "NIGHTFURY\\Ceyoul"
-		},
-		"RestService6_properties_typeProperties_url": {
-			"value": "https://jsonplaceholder.typicode.com/albums"
 		}
 	}
 }
