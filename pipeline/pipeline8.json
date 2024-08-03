@@ -35,9 +35,7 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "InvoiceNumber",
-									"type": "String",
-									"physicalType": "String"
+									"name": ""
 								},
 								"sink": {
 									"name": "InvoiceNumber",
@@ -47,9 +45,7 @@
 							},
 							{
 								"source": {
-									"name": "Date",
-									"type": "String",
-									"physicalType": "String"
+									"name": ""
 								},
 								"sink": {
 									"name": "Date",
@@ -59,9 +55,7 @@
 							},
 							{
 								"source": {
-									"name": "Type",
-									"type": "String",
-									"physicalType": "String"
+									"name": ""
 								},
 								"sink": {
 									"name": "Type",
@@ -71,9 +65,7 @@
 							},
 							{
 								"source": {
-									"name": "Period",
-									"type": "String",
-									"physicalType": "String"
+									"name": ""
 								},
 								"sink": {
 									"name": "Period",
@@ -83,9 +75,7 @@
 							},
 							{
 								"source": {
-									"name": "DueDate",
-									"type": "String",
-									"physicalType": "String"
+									"name": ""
 								},
 								"sink": {
 									"name": "DueDate",
@@ -95,9 +85,7 @@
 							},
 							{
 								"source": {
-									"name": "InvoiceDate",
-									"type": "String",
-									"physicalType": "String"
+									"name": ""
 								},
 								"sink": {
 									"name": "InvoiceDate",
@@ -107,9 +95,7 @@
 							},
 							{
 								"source": {
-									"name": "FromDate",
-									"type": "String",
-									"physicalType": "String"
+									"name": ""
 								},
 								"sink": {
 									"name": "FromDate",
@@ -119,9 +105,7 @@
 							},
 							{
 								"source": {
-									"name": "ToDate",
-									"type": "String",
-									"physicalType": "String"
+									"name": ""
 								},
 								"sink": {
 									"name": "ToDate",
@@ -131,9 +115,7 @@
 							},
 							{
 								"source": {
-									"name": "NetAmount",
-									"type": "String",
-									"physicalType": "String"
+									"name": ""
 								},
 								"sink": {
 									"name": "NetAmount",
@@ -143,9 +125,7 @@
 							},
 							{
 								"source": {
-									"name": "VatAmount",
-									"type": "String",
-									"physicalType": "String"
+									"name": ""
 								},
 								"sink": {
 									"name": "VatAmount",
@@ -155,9 +135,7 @@
 							},
 							{
 								"source": {
-									"name": "grossValue",
-									"type": "String",
-									"physicalType": "String"
+									"name": ""
 								},
 								"sink": {
 									"name": "grossValue",
@@ -264,6 +242,33 @@
 				"userProperties": [],
 				"typeProperties": {
 					"storedProcedureName": "[dbo].[CreateSTGInvoiceTbl]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SqlServer7",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Stored procedure2",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Stored procedure1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[sp_dim_tblInvoice]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SqlServer7",
