@@ -26,8 +26,7 @@
 					"sink": {
 						"type": "SqlServerSink",
 						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate"
+						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -35,7 +34,9 @@
 						"mappings": [
 							{
 								"source": {
-									"name": ""
+									"name": "InvoiceNumber",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "InvoiceNumber",
@@ -45,7 +46,9 @@
 							},
 							{
 								"source": {
-									"name": ""
+									"name": "Date",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Date",
@@ -55,7 +58,9 @@
 							},
 							{
 								"source": {
-									"name": ""
+									"name": "Type",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Type",
@@ -65,7 +70,9 @@
 							},
 							{
 								"source": {
-									"name": ""
+									"name": "Period",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Period",
@@ -75,7 +82,9 @@
 							},
 							{
 								"source": {
-									"name": ""
+									"name": "DueDate",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "DueDate",
@@ -85,7 +94,9 @@
 							},
 							{
 								"source": {
-									"name": ""
+									"name": "InvoiceDate",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "InvoiceDate",
@@ -95,7 +106,9 @@
 							},
 							{
 								"source": {
-									"name": ""
+									"name": "FromDate",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "FromDate",
@@ -105,7 +118,9 @@
 							},
 							{
 								"source": {
-									"name": ""
+									"name": "ToDate",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "ToDate",
@@ -115,7 +130,9 @@
 							},
 							{
 								"source": {
-									"name": ""
+									"name": "NetAmount",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "NetAmount",
@@ -125,7 +142,9 @@
 							},
 							{
 								"source": {
-									"name": ""
+									"name": "VatAmount",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "VatAmount",
@@ -135,7 +154,9 @@
 							},
 							{
 								"source": {
-									"name": ""
+									"name": "grossValue",
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "grossValue",
@@ -195,12 +216,49 @@
 					"sink": {
 						"type": "SqlServerSink",
 						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate"
+						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "SKTransType",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SKTransType",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BKTransType",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "BKTransType",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "TransDesc",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "TransDesc",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
