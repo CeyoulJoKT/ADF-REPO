@@ -1,5 +1,5 @@
 {
-	"name": "SqlServerTable15",
+	"name": "SqlServerTable16",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SqlServer7",
@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "STG",
-			"table": "Sales"
+			"table": "Type"
 		}
 	}
 }

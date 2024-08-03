@@ -1,18 +1,9 @@
 {
 	"name": "DelimitedText17",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage9",
-			"type": "LinkedServiceReference"
-		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
-			"location": {
-				"type": "AzureBlobStorageLocation",
-				"fileName": "DataSample.xlsx",
-				"container": "shatest"
-			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,

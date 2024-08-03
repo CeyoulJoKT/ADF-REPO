@@ -1,0 +1,31 @@
+{
+	"name": "Excel4",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage9",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Type",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "DataSample.xlsx",
+				"container": "shatest"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			}
+		]
+	}
+}
