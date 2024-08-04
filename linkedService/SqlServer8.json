@@ -1,0 +1,21 @@
+{
+	"name": "SqlServer8",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "NIGHTFURY\\SQLEXPRESS02",
+			"database": "shatest",
+			"encrypt": "optional",
+			"trustServerCertificate": false,
+			"authenticationType": "Windows",
+			"userName": "NIGHTFURY\\Ceyoul",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI1MTlmOTI3MS1hNDVlLTRlZjgtOTY2ZC00MzczZjczZDg1MGYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime3",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
