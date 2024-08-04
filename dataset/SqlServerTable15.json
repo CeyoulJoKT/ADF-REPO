@@ -2,7 +2,7 @@
 	"name": "SqlServerTable15",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SqlServer7",
+			"referenceName": "SqlServer8",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],

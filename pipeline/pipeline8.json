@@ -47,18 +47,6 @@
 							},
 							{
 								"source": {
-									"name": "Date",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Date",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
 									"name": "Type",
 									"type": "String",
 									"physicalType": "String"
@@ -161,6 +149,18 @@
 								},
 								"sink": {
 									"name": "grossValue",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Date",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -282,7 +282,7 @@
 				]
 			},
 			{
-				"name": "Stored procedure1",
+				"name": "JOIN SALES_TYPES",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
@@ -309,11 +309,11 @@
 				}
 			},
 			{
-				"name": "Stored procedure2",
+				"name": "ADDING COLUMNS _DIM_INVOICE",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Stored procedure1",
+						"activity": "Alter Table",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -329,6 +329,33 @@
 				"userProperties": [],
 				"typeProperties": {
 					"storedProcedureName": "[dbo].[sp_dim_tblInvoice]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SqlServer7",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Alter Table",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "JOIN SALES_TYPES",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[sp_alterTable]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SqlServer7",
