@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "SALES_BLOBTOSQL",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -187,11 +187,11 @@
 				]
 			},
 			{
-				"name": "Copy data2",
+				"name": "TYPES_SALESTOSQL",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Copy data1",
+						"activity": "SALES_BLOBTOSQL",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -286,7 +286,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Copy data2",
+						"activity": "TYPES_SALESTOSQL",
 						"dependencyConditions": [
 							"Succeeded"
 						]
